@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十三份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十四份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十三份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十四份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -41,6 +41,8 @@ permalink: /
   更新引擎与 A/B、Virtual A/B 两条通道（`update_engine` 对应用隐藏、公开面为 `SystemUpdateManager`）、载荷 `CrAU` magic 与 `payload_properties.txt` 四字段、`otacerts.zip` 验签、回滚索引与降级判定的真实条件、`recovery` 成文边界、releasetools 与 target_files 打包、FRP 交叉；含逐条核实归属的公开案例、误传纠正与真实可读属性，未能核实项单列
 - **APK 签名与安装校验手册**：[android-apk-signing-install.md](/android-apk-signing-install/)
   v1–v4 方案官方口径与保护范围、v3 proof-of-rotation 属性与 `apksigner rotate` 参数、Android 13 起才认 lineage、`PackageManager` 安装标志与 46 个 `INSTALL_FAILED_*` 实名、`GET_SIGNATURES` 顺序不稳定与 `signingInfo` 迁移、剥离 v2+ 签名的拒绝规则；含 13 条案例与 13 条误传纠正
+- **框架 IPC 与组件导出攻击面手册**：[android-framework-ipc-export.md](/android-framework-ipc-export/)
+  组件导出与权限属性、640 条 `<protected-broadcast>` 实名清单口径、PendingIntent 与后台活动启动（BAL）规则的现行形态、ContentProvider 与四类 URI 授权标志、Deep Link 与 App Links 验证、Task 劫持的官方术语与 opt-in 边界；含逐条核实归属的案例表、18 条误传纠正与自查观测点
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
