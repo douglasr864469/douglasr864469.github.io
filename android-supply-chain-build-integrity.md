@@ -2,7 +2,7 @@
 layout: page
 title: "Android 供应链与构建完整性手册"
 description: "为什么「代码从哪来、产物怎么被验证」也是安全边界：AOSP 源码的官方获取口径与发布节奏、官方认可的 Git tag PGP 验签、`make dist` 与 `make` 两条构建刷机路径的差异、`super`/`lpmake` 动态分区里必须保持物理的三类、产物侧签名锚点、SBOM 的官方生成路径与..."
-date: 2026-10-27
+date: 2026-10-29
 permalink: /android-supply-chain-build-integrity/
 ---
 
