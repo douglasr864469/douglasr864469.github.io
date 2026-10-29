@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十七份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十八份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十七份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十八份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -49,6 +49,8 @@ permalink: /
   官方根本没有「GKI 2.0」这个说法，现行口径是一条双条件强制句（Android 12 起且内核 ≥5.10 必须用 GKI）；`androidNN-K.K` 分支命名与 Android 12–17 的多内核并存矩阵、KMI 世代号写在 `build.config.common`、冻结后影响 KMI 的 CONFIG 变更被构建拒绝；Android 13 起 `boot.img` 只剩内核、generic ramdisk 迁往 `init_boot`、`system_dlkm` 成为强制动态分区；两条签名主体的真实分工——认证 GKI `boot.img` 未做 verified boot 签名、OEM 必须用设备专属 AVB key 重签，而 `system_dlkm` 内的模块由 Google 的 kernel build-time key pair 签名；vendor hook 的 `android_vh_`/`android_rvh_` 实名与「挂受限 hook 的模块永远无法卸载」这条处置约束；可一手实名的加固项只有 `CONFIG_CFI_CLANG`、`CONFIG_CFI_PERMISSIVE`、`CONFIG_SHADOW_CALL_STACK` 三项；公告内核表列头实名 `CVE / References / Type / Severity / Subcomponent` 与 Subcomponent 取值（pKVM、IOMMU、Net、EPoll、XFRM、Mali、PowerVR-GPU、preloader）、19 行逐字案例台账、`Kernel LTS` 表才是内核修复的权威核对位置；18 条常见误传纠正，DDK 与符号表文件名、syzkaller、历史 CVE 措辞等 12 组未核实项单列
 - **崩溃诊断与日志信息暴露面手册**：[android-diagnostics-log-exposure.md](/android-diagnostics-log-exposure/)
   把「崩溃会留下什么」拆成四条互不替代的留存通道：`debuggerd`/`crash_dump`/`tombstoned` 的原生崩溃路径、`dropbox` 的系统级事件 blob、`bugreport` 这个最大的聚合外泄面、`logcat`/`logd`/`READ_LOGS` 的读取边界；另含内核侧 `pstore`/`ramoops`/`dmesg_restrict`/`kptr_restrict` 的留存与抑制、「日志含敏感信息」的官方成文位置、误传纠正与「观测缺口 ≠ 风险缺口」这条方法论结论
+- **变体设备安全面手册（车机／电视／穿戴）**：[android-variants-automotive-tv.md](/android-variants-automotive-tv/)
+  变体不是「同一系统换个壳」：车机用户模型必须从 headless system user 讲起、VHAL 与 CarService 这层车机特有信号抽象的真实边界、变体在官方披露体系里的位置、AAOS 公告逐条台账与 CISA KEV 中车机条目全部缺席的核对结果；含只用已核实命令/属性的自查清单与企业侧处置建议
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
