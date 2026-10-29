@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十八份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十九份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十八份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十九份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -51,6 +51,8 @@ permalink: /
   把「崩溃会留下什么」拆成四条互不替代的留存通道：`debuggerd`/`crash_dump`/`tombstoned` 的原生崩溃路径、`dropbox` 的系统级事件 blob、`bugreport` 这个最大的聚合外泄面、`logcat`/`logd`/`READ_LOGS` 的读取边界；另含内核侧 `pstore`/`ramoops`/`dmesg_restrict`/`kptr_restrict` 的留存与抑制、「日志含敏感信息」的官方成文位置、误传纠正与「观测缺口 ≠ 风险缺口」这条方法论结论
 - **变体设备安全面手册（车机／电视／穿戴）**：[android-variants-automotive-tv.md](/android-variants-automotive-tv/)
   变体不是「同一系统换个壳」：车机用户模型必须从 headless system user 讲起、VHAL 与 CarService 这层车机特有信号抽象的真实边界、变体在官方披露体系里的位置、AAOS 公告逐条台账与 CISA KEV 中车机条目全部缺席的核对结果；含只用已核实命令/属性的自查清单与企业侧处置建议
+- **供应链与构建完整性手册**：[android-supply-chain-build-integrity.md](/android-supply-chain-build-integrity/)
+  为什么「代码从哪来、产物怎么被验证」也是安全边界：AOSP 源码的官方获取口径与发布节奏、官方认可的 Git tag PGP 验签、`make dist` 与 `make` 两条构建刷机路径的差异、`super`/`lpmake` 动态分区里必须保持物理的三类、产物侧签名锚点、SBOM 的官方生成路径与它能回答／不能回答的问题；含产物与发布链路侧已修复案例、分角色处置清单与误传纠正
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
