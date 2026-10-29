@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十二份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十二份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -55,6 +55,10 @@ permalink: /
   为什么「代码从哪来、产物怎么被验证」也是安全边界：AOSP 源码的官方获取口径与发布节奏、官方认可的 Git tag PGP 验签、`make dist` 与 `make` 两条构建刷机路径的差异、`super`/`lpmake` 动态分区里必须保持物理的三类、产物侧签名锚点、SBOM 的官方生成路径与它能回答／不能回答的问题；含产物与发布链路侧已修复案例、分角色处置清单与误传纠正
 - **文件路径与 URI 处理类漏洞手册**：[android-path-uri-handling.md](/android-path-uri-handling/)
   把「把用户给的名字当成自己认识的对象」拆成三种逃逸与三条防线：同一个 inode 的多个名字（含 `isolateAppData()` 在私有 mount namespace 里 `symlink("/data/data", "/data/user/0")`）、`canonical` 与 `normalize` 的分工与六类归一化差异、检查与使用之间的窗口（`O_NOFOLLOW`／FD 化／Java 层缺 `RESOLVE_BENEATH` 的边界）、`startsWith` 少斜杠与 `Path.resolve` 绝对路径覆盖（并纠正「Java `new File(root, input)` 会被绝对路径跳出」这条误传）；另含 Scoped Storage 与 `MANAGE_EXTERNAL_STORAGE` 的三条做不到、SAF 授权随重启失效与 `FLAG_GRANT_PREFIX_URI_PERMISSION` 的前缀溢出、`FileProvider` 七个根与 `belongsToRoot()` 的 `rootPath + '/'`、自写 `openFile()` 的三个校验点、Zip Slip 七类变体、12 条自查清单与 8 组未核实项
+- **无线与近场通信攻击面手册（Wi-Fi／蓝牙／NFC／UWB）**：[android-wireless-nearby-stacks.md](/android-wireless-nearby-stacks/)
+  把「射频邻近即可攻击」拆成四套独立边界：Wi-Fi 是网络栈（`com.android.wifi` 的模块化有版本差异，Android 11 时 Wi-Fi 服务仍在 system_server 内）、蓝牙是外设与音频总线（Android 12 三个运行时权限与 `neverForLocation` 会过滤部分 beacon 的副作用）、NFC 贴近即读且卡片模拟的唯一授权点是「默认服务」选择、UWB 的 HAL 由 FiRa UCI 约束；另含 Wi-Fi 三面 HAL（Vendor／Supplicant／Hostapd）与 AIDL 化时间线、HID 注入与「配对≠在场」、邪恶双胞胎与 EAP 证书校验、NDEF 解析边界、2017/2021/2023 三种公告表形态、七类成因、12 条误传纠正与 8 组未核实项
+- **摄像头、麦克风与屏幕捕获面手册**：[android-media-capture-privacy.md](/android-media-capture-privacy/)
+  把「能录你」拆成三条对象不同的链路：相机与麦克风受权限 + app-op 双层控制（`AppOpsManager.startOp/stopOp/noteOp`、Android 9 起后台受限、Android 12 起有设备级开关与状态栏指示器），屏幕捕获则是**每次会话一次同意**（Android 14 起复用 `createScreenCaptureIntent()` 的 Intent 或在同一 `MediaProjection` 上二次 `createVirtualDisplay` 抛 `SecurityException`，未注册 `Callback#onStop` 抛 `IllegalStateException`）；另含应用级共享与状态栏胶囊的版本限定（Android 15 QPR1）、`FLAG_SECURE` 的真实边界、`AudioPlaybackCapture` 的被捕获方允许模型、Media framework 公告条目的读法、七种成因与 12 条误传纠正
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
