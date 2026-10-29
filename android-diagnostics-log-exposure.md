@@ -2,7 +2,7 @@
 layout: page
 title: "Android 崩溃诊断与日志信息暴露面手册"
 description: "把「崩溃会留下什么」拆成四条互不替代的留存通道：`debuggerd`/`crash_dump`/`tombstoned` 的原生崩溃路径、`dropbox` 的系统级事件 blob、`bugreport` 这个最大的聚合外泄面、`logcat`/`logd`/`READ_LOGS` 的读取边界；另含内..."
-date: 2026-10-27
+date: 2026-10-29
 permalink: /android-diagnostics-log-exposure/
 ---
 

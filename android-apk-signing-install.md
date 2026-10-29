@@ -2,7 +2,7 @@
 layout: page
 title: "Android APK 签名与安装校验攻击面手册"
 description: "v1–v4 方案官方口径与保护范围、v3 proof-of-rotation 属性与 `apksigner rotate` 参数、Android 13 起才认 lineage、`PackageManager` 安装标志与 46 个 `INSTALL_FAILED_*` 实名、`GET_SIGNATURE..."
-date: 2026-10-27
+date: 2026-10-28
 permalink: /android-apk-signing-install/
 ---
 

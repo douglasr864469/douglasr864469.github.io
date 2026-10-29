@@ -2,7 +2,7 @@
 layout: page
 title: "Android 框架 IPC 与组件导出攻击面手册"
 description: "组件导出与权限属性、640 条 `<protected-broadcast>` 实名清单口径、PendingIntent 与后台活动启动（BAL）规则的现行形态、ContentProvider 与四类 URI 授权标志、Deep Link 与 App Links 验证、Task 劫持的官方术语与 opt..."
-date: 2026-10-27
+date: 2026-10-28
 permalink: /android-framework-ipc-export/
 ---
 

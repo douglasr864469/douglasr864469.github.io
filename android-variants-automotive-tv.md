@@ -2,7 +2,7 @@
 layout: page
 title: "Android 变体设备安全面手册：车机、电视与穿戴"
 description: "变体不是「同一系统换个壳」：车机用户模型必须从 headless system user 讲起、VHAL 与 CarService 这层车机特有信号抽象的真实边界、变体在官方披露体系里的位置、AAOS 公告逐条台账与 CISA KEV 中车机条目全部缺席的核对结果；含只用已核实命令/属性的自查清单与企业..."
-date: 2026-10-27
+date: 2026-10-29
 permalink: /android-variants-automotive-tv/
 ---
 
