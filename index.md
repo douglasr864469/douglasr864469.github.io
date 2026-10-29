@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十九份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十九份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -53,6 +53,8 @@ permalink: /
   变体不是「同一系统换个壳」：车机用户模型必须从 headless system user 讲起、VHAL 与 CarService 这层车机特有信号抽象的真实边界、变体在官方披露体系里的位置、AAOS 公告逐条台账与 CISA KEV 中车机条目全部缺席的核对结果；含只用已核实命令/属性的自查清单与企业侧处置建议
 - **供应链与构建完整性手册**：[android-supply-chain-build-integrity.md](/android-supply-chain-build-integrity/)
   为什么「代码从哪来、产物怎么被验证」也是安全边界：AOSP 源码的官方获取口径与发布节奏、官方认可的 Git tag PGP 验签、`make dist` 与 `make` 两条构建刷机路径的差异、`super`/`lpmake` 动态分区里必须保持物理的三类、产物侧签名锚点、SBOM 的官方生成路径与它能回答／不能回答的问题；含产物与发布链路侧已修复案例、分角色处置清单与误传纠正
+- **文件路径与 URI 处理类漏洞手册**：[android-path-uri-handling.md](/android-path-uri-handling/)
+  把「把用户给的名字当成自己认识的对象」拆成三种逃逸与三条防线：同一个 inode 的多个名字（含 `isolateAppData()` 在私有 mount namespace 里 `symlink("/data/data", "/data/user/0")`）、`canonical` 与 `normalize` 的分工与六类归一化差异、检查与使用之间的窗口（`O_NOFOLLOW`／FD 化／Java 层缺 `RESOLVE_BENEATH` 的边界）、`startsWith` 少斜杠与 `Path.resolve` 绝对路径覆盖（并纠正「Java `new File(root, input)` 会被绝对路径跳出」这条误传）；另含 Scoped Storage 与 `MANAGE_EXTERNAL_STORAGE` 的三条做不到、SAF 授权随重启失效与 `FLAG_GRANT_PREFIX_URI_PERMISSION` 的前缀溢出、`FileProvider` 七个根与 `belongsToRoot()` 的 `rootPath + '/'`、自写 `openFile()` 的三个校验点、Zip Slip 七类变体、12 条自查清单与 8 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明

@@ -1,5 +1,5 @@
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、十九份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十份专题手册与一篇底层漏洞研究文章。"
 lang: zh-CN
 timezone: Asia/Shanghai
 url: "https://douglasr864469.github.io"
