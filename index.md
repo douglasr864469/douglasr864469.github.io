@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十二份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十三份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十二份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十三份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -59,6 +59,8 @@ permalink: /
   把「射频邻近即可攻击」拆成四套独立边界：Wi-Fi 是网络栈（`com.android.wifi` 的模块化有版本差异，Android 11 时 Wi-Fi 服务仍在 system_server 内）、蓝牙是外设与音频总线（Android 12 三个运行时权限与 `neverForLocation` 会过滤部分 beacon 的副作用）、NFC 贴近即读且卡片模拟的唯一授权点是「默认服务」选择、UWB 的 HAL 由 FiRa UCI 约束；另含 Wi-Fi 三面 HAL（Vendor／Supplicant／Hostapd）与 AIDL 化时间线、HID 注入与「配对≠在场」、邪恶双胞胎与 EAP 证书校验、NDEF 解析边界、2017/2021/2023 三种公告表形态、七类成因、12 条误传纠正与 8 组未核实项
 - **摄像头、麦克风与屏幕捕获面手册**：[android-media-capture-privacy.md](/android-media-capture-privacy/)
   把「能录你」拆成三条对象不同的链路：相机与麦克风受权限 + app-op 双层控制（`AppOpsManager.startOp/stopOp/noteOp`、Android 9 起后台受限、Android 12 起有设备级开关与状态栏指示器），屏幕捕获则是**每次会话一次同意**（Android 14 起复用 `createScreenCaptureIntent()` 的 Intent 或在同一 `MediaProjection` 上二次 `createVirtualDisplay` 抛 `SecurityException`，未注册 `Callback#onStop` 抛 `IllegalStateException`）；另含应用级共享与状态栏胶囊的版本限定（Android 15 QPR1）、`FLAG_SECURE` 的真实边界、`AudioPlaybackCapture` 的被捕获方允许模型、Media framework 公告条目的读法、七种成因与 12 条误传纠正
+- **HAL 与 Treble 边界攻击面手册**：[android-hal-treble-boundary.md](/android-hal-treble-boundary/)
+  把「厂商代码怎么被系统调用」拆成四道互不替代的关卡：VINTF 声明只回答「提供什么／要求什么」而非访问控制、binderized 与 passthrough 的地址空间差别（SP-HAL 库被加载进框架进程）、servicemanager 与 hwservicemanager 两个不互通的注册中心、VNDK 自 Android 15 弃用与 linker namespace 的 `public.libraries.txt` 白名单；另含 HIDL（Android 10 弃用）→ AIDL for HALs（Android 11）的实例名形态差异、`checkvintf` 实为构建期 host 工具而设备侧二进制叫 `vintf`、`lshal` 看不到 AIDL HAL 的盲区、五类结构性成因、八条 CVE 归属纠正表与 13 条误传纠正
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
