@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十六份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十七份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十六份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十七份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -67,6 +67,8 @@ permalink: /
   把「应用能不能联网」拆成策略与执行两层：策略在 Java（`ConnectivityService`／`NetworkPolicyManager`／`Vpn`），执行在内核（eBPF cgroup 钩子、`xt_bpf` 挂于 `bw_raw_PREROUTING`／`bw_mangle_POSTROUTING`、按 UID 的 firewall 链）；另含 qtaguid→eBPF 的替换与 `bpfloader` 是独立特权进程、VPN 的 allowlist／disallowlist 互斥与 `bindProcessToNetwork` 的旁路效应、`IDnsResolver` 的按网络缓存与 `setAllowBypassPrivateDnsOnNetwork` 的逐 UID 降级、DoT（SDK 28）／DoH3（SDK 30）、neverallow 主体是 `all_untrusted_apps` 而非 `appdomain`；含七类成因与 11 条误传纠正
 - **ART 运行时与代码加载攻击面手册**：[android-art-runtime-code-loading.md](/android-art-runtime-code-loading/)
   把「执行的代码」与「发布的代码」分开：dex→vdex（提取的 dex + 校验和 + `VerifierDeps` + 类型查找表）→odex→`.art` 的四产物链、编译过滤器自 Android 8 起四种而 `quicken` 已移除、boot image 自 Android 12 固定 `speed-profile`、Android 14 起 JIT profile 恒开启且不可关闭；另含 ART 作为 `com.android.art` APEX 独立更新的双刃、hidden API 的豁免逻辑不含 debuggable 分支、动态加载的三次收紧（Android 10 禁 `execve`／可写 fd 映射、14 强制 Java 侧只读、17 扩到 `System.load()`）、`public.libraries.txt` 构成的 native 边界；含 dex2oat 案例与 13 条误传纠正
+- **图形与显示栈攻击面手册**：[android-graphics-display-stack.md](/android-graphics-display-stack/)
+  把「一块像素到屏幕」的三段结构讲透：BufferQueue 由消费者创建并拥有且可与生产者跨进程、SurfaceFlinger 是独立 system 进程且是唯一能修改显示内容的服务、HWC 决定合成路径；另含 gralloc 的 HIDL 谱系自 `@2.0` 起（gralloc1 并非 HIDL）、composer 无 `@2.0`、ION→dma-buf heaps（节点为 `system-uncached`，连字符）、普通应用域对 `gpu_device` 持有 rw 权限这一硬事实、`FLAG_SECURE` 的官方边界与「不是权限」这一事实、`HW_SECURE_ALL`／`HW_SECURE_DECODE` 与 Widevine L1/L2/L3 的区分、`setTransactionState` 三个后果不同的案例；含六条归属纠正与 12 条误传纠正
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
