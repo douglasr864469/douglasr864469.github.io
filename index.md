@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十四份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十五份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十四份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十五份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -63,6 +63,8 @@ permalink: /
   把「厂商代码怎么被系统调用」拆成四道互不替代的关卡：VINTF 声明只回答「提供什么／要求什么」而非访问控制、binderized 与 passthrough 的地址空间差别（SP-HAL 库被加载进框架进程）、servicemanager 与 hwservicemanager 两个不互通的注册中心、VNDK 自 Android 15 弃用与 linker namespace 的 `public.libraries.txt` 白名单；另含 HIDL（Android 10 弃用）→ AIDL for HALs（Android 11）的实例名形态差异、`checkvintf` 实为构建期 host 工具而设备侧二进制叫 `vintf`、`lshal` 看不到 AIDL HAL 的盲区、五类结构性成因、八条 CVE 归属纠正表与 13 条误传纠正
 - **存储与文件系统栈攻击面手册**：[android-storage-filesystem-stack.md](/android-storage-filesystem-stack/)
   把「应用写文件」拆成三条对象不同的机制：CE/DE 的路径与可用时机（`/data/user/0` vs `/data/user_de/0`）、vold 以 Binder 服务（`IVold`）管挂载与全部 FBE 密钥、以及 `/sdcard` 上真正做访问判断的是 MediaProvider 进程内的 Java `FuseDaemon` 线程；另含 sdcardfs 弃用的内核版本限定（5.4+，4.19 及以下仍可用）、metadata encryption 自 Android 11 强制且由 KeyMint 保护、synthetic password 随机生成而非由口令推导、IncFS 的 Merkle 根来自 APK v4 签名而非文件系统；含 F2FS 案例、六条归属纠正与 13 条误传纠正
+- **网络数据路径与内核过滤攻击面手册**：[android-network-data-path.md](/android-network-data-path/)
+  把「应用能不能联网」拆成策略与执行两层：策略在 Java（`ConnectivityService`／`NetworkPolicyManager`／`Vpn`），执行在内核（eBPF cgroup 钩子、`xt_bpf` 挂于 `bw_raw_PREROUTING`／`bw_mangle_POSTROUTING`、按 UID 的 firewall 链）；另含 qtaguid→eBPF 的替换与 `bpfloader` 是独立特权进程、VPN 的 allowlist／disallowlist 互斥与 `bindProcessToNetwork` 的旁路效应、`IDnsResolver` 的按网络缓存与 `setAllowBypassPrivateDnsOnNetwork` 的逐 UID 降级、DoT（SDK 28）／DoH3（SDK 30）、neverallow 主体是 `all_untrusted_apps` 而非 `appdomain`；含七类成因与 11 条误传纠正
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
