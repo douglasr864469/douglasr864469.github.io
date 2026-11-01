@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十八份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十九份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十八份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十九份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -71,6 +71,8 @@ permalink: /
   把「一块像素到屏幕」的三段结构讲透：BufferQueue 由消费者创建并拥有且可与生产者跨进程、SurfaceFlinger 是独立 system 进程且是唯一能修改显示内容的服务、HWC 决定合成路径；另含 gralloc 的 HIDL 谱系自 `@2.0` 起（gralloc1 并非 HIDL）、composer 无 `@2.0`、ION→dma-buf heaps（节点为 `system-uncached`，连字符）、普通应用域对 `gpu_device` 持有 rw 权限这一硬事实、`FLAG_SECURE` 的官方边界与「不是权限」这一事实、`HW_SECURE_ALL`／`HW_SECURE_DECODE` 与 Widevine L1/L2/L3 的区分、`setTransactionState` 三个后果不同的案例；含六条归属纠正与 12 条误传纠正
 - **输入子系统与事件注入攻击面手册**：[android-input-event-injection.md](/android-input-event-injection/)
   把「点一下」拆成三层三种身份：内核 evdev 的 24 字节 `input_event` 与 `SYN_REPORT` 提交屏障、system_server 内的 EventHub/InputReader/InputDispatcher、以及应用侧走 socketpair 而非 Binder 的 InputChannel；另含五条注入入口的权限对照（`injectInputEvent` 的 `INJECT_EVENTS`、`adb shell input`、`UiAutomation`、无障碍手势、`uinput`）、注入事件 `deviceId=-1` 的可辨识性边界、Android 12 不可信触摸阻断与 `FLAG_WINDOW_IS_OBSCURED`、`setHideOverlayWindows`、无障碍=完全控制的授权半径；含 13 条误传纠正与 4 组未核实项
+- **音频栈与媒体会话攻击面手册**：[android-audio-media-session.md](/android-audio-media-session/)
+  把「麦克风开着」拆成四条链路：audioserver 里的 AudioFlinger/AudioPolicyService/AAudioService、共享内存而非 Binder 的 PCM 通路、HAL 从 HIDL 到 AIDL 的形态迁移、以及媒体会话这条独立控制面；另含 `RECORD_AUDIO` 与 AppOps 双层判定、Android 9 起后台麦克风限制、回放捕获「双方同意」模型（`MediaProjection`、`allowAudioPlaybackCapture`、`setAllowedCapturePolicy` 三档）、通知监听器等价于全局媒体控制权；含 13 条误传纠正与 4 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
