@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十九份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十一份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、二十九份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十一份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -73,6 +73,10 @@ permalink: /
   把「点一下」拆成三层三种身份：内核 evdev 的 24 字节 `input_event` 与 `SYN_REPORT` 提交屏障、system_server 内的 EventHub/InputReader/InputDispatcher、以及应用侧走 socketpair 而非 Binder 的 InputChannel；另含五条注入入口的权限对照（`injectInputEvent` 的 `INJECT_EVENTS`、`adb shell input`、`UiAutomation`、无障碍手势、`uinput`）、注入事件 `deviceId=-1` 的可辨识性边界、Android 12 不可信触摸阻断与 `FLAG_WINDOW_IS_OBSCURED`、`setHideOverlayWindows`、无障碍=完全控制的授权半径；含 13 条误传纠正与 4 组未核实项
 - **音频栈与媒体会话攻击面手册**：[android-audio-media-session.md](/android-audio-media-session/)
   把「麦克风开着」拆成四条链路：audioserver 里的 AudioFlinger/AudioPolicyService/AAudioService、共享内存而非 Binder 的 PCM 通路、HAL 从 HIDL 到 AIDL 的形态迁移、以及媒体会话这条独立控制面；另含 `RECORD_AUDIO` 与 AppOps 双层判定、Android 9 起后台麦克风限制、回放捕获「双方同意」模型（`MediaProjection`、`allowAudioPlaybackCapture`、`setAllowedCapturePolicy` 三档）、通知监听器等价于全局媒体控制权；含 13 条误传纠正与 4 组未核实项
+- **传感器与定位攻击面手册**：[android-sensors-location.md](/android-sensors-location/)
+  把「设备知道你在哪」拆成两条互不相同的通路：免权限 motion 传感器经 BitTube 队列与 `SensorDirectChannel` 旁路上报、定位经 LocationManagerService 与 GNSS HAL；另含权限/精度/频率三个独立维度、Android 12 的 200 Hz 上限与 `HIGH_SAMPLING_RATE_SENSORS`、大概位置的模糊化实现、passive provider 的「搭便车」通道、模拟位置的 AppOps 通路与 `isMock()` 的边界；含 13 条误传纠正与 5 组未核实项
+- **设备端 AI 推理运行时攻击面手册**：[android-ondevice-ai-runtime.md](/android-ondevice-ai-runtime/)
+  把「模型文件」当作文档型攻击面来审：NNAPI 自 Android 15 弃用（官方建议迁移 TF Lite GPU runtime）、控制面走 Binder 而张量走共享内存、HAL 驱动在 vendor 进程、TFLite 以 `TFL3` 标识且权重是模型自己写的偏移+长度；另含形状乘法溢出、Burst slot 复用导致的 buffer 重叠、delegate 把参数带进 GPU/NPU 驱动、模型热更新等于远程输入入口；含 13 条误传纠正与 5 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
