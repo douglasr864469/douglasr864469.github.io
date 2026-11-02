@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十九份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十九份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -93,6 +93,8 @@ permalink: /
   把「配对就安全了」拆成五段：发现／连接／配对／绑定／授权访问，权限侧讲清 Android 12 三件套为什么是三种能力（`BLUETOOTH_SCAN`／`ADVERTISE`／`CONNECT`）、`neverForLocation` 是应用承诺且会让系统过滤部分 beacon、定位耦合看 `targetSdk` 而非设备版本、CDM 代扫只绕过定位不绕过 `CONNECT`；协议侧讲清 SSP 四种关联模型与 MITM 的真实对应（Just Works 不防中间人）、LE Legacy 与 LE Secure Connections 的分界、LTK/IRK/CSRK 都由栈持有且无公开 API；绑定侧讲清 `BOND_BONDED` 只表示本地存有 link key、`setPairingConfirmation` 需 `BLUETOOTH_PRIVILEGED`、`ACTION_PAIRING_REQUEST` 只能收不能伪造、Android 16 改为断开链路并保留本地绑定、解绑不承诺对端删密钥；GATT 侧讲清 `PERMISSION_READ_ENCRYPTED` 与 `_ENCRYPTED_MITM` 不是一回事、栈只强制安全位；含 11 条公告台账（逐条核对 `System` 节与 `packages/modules/Bluetooth` 补丁路径）、六种成因模式、22 条误传纠正与 12 组未核实项
 - **USB 主机、配件与有线外设攻击面手册**：[android-usb-host-accessory-peripherals.md](/android-usb-host-accessory-peripherals/)
   把「插上 USB」拆成三条角色不同的路径：主机模式由手机供电并枚举、配件模式（AOA）由配件供电并枚举、设备侧 gadget 由对端主机枚举；权限侧讲清 `requestPermission` 的授权只到设备断开为止、`UsbManager.ACTION_USB_PERMISSION` 并不存在（官方示例用应用自定义 action）、intent-filter + `device_filter.xml` 会弹「是否打开此应用」而非静默授权、空过滤器匹配所有设备、UVC 设备还需 `CAMERA` 权限；外设侧讲清 HID 直达 `InputReader`、音频走 HAL、RNDIS/NCM 进入网络栈、Android 无官方 UMS，以及 MTP 只在解锁后挂载共享存储、PTP 仅暴露 `DCIM`/`Pictures`、不暴露 `/data`；设备侧讲清 `IUsbGadget` 与 `GadgetFunction` 功能位、configfs 由特权域写入、ADB 的三道门与 `ro.adb.secure`、Android 12 起的 USB 数据信令企业策略；另含 USB-C 角色与 Alt Mode（无 `MODE_DRP`、框架不解析 PD）、14 条已核实公告台账与两条「公告措辞≠真实组件」案例、六种成因模式、12 条误传纠正与 10 组未核实项
+- **媒体解码与容器解析攻击面手册**：[android-media-codec-container-parsing.md](/android-media-codec-container-parsing/)
+  把「打开一个媒体文件」拆成取数／解复用／解码／输出四段：Android 7.0 把单体 `mediaserver` 拆成 `mediaextractor`（UID 1040）、`media.codec`、`audioserver`、`cameraserver` 等独立进程，Android 10 又把软解移入 APEX 里的 `media.swcodec`（UID 1046，`mediacodec` 用户）；沙箱侧逐条列出 `mediaextractor` 能读 fd 但不能 `open` 应用数据、`mediaswcodec` 只有 GPU/dmabuf 而无应用数据与视频设备、`MediaExtractor` 默认经 `media.stagefright.extractremote` 走远程解析、`MediaParser`（API 30，非 12）默认在应用进程内解析、`MediaMetadataRetriever` 仍需绕经 `mediaserver` 与解析器两跳；解码侧讲清 `c2.`/`omx.` 前缀分派、软解与硬解的补丁节奏差异、`isSoftwareOnly` 与 API 36 的 `getSecurityModel`；含 27 条已核实公告台账（2015 Stagefright 批次、libavc/libhevc/libmpeg2/aac、容器解析与 EoP）、六种成因模式、13 条误传纠正与 14 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
