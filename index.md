@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十六份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十七份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十六份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十七份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -87,6 +87,8 @@ permalink: /
   把「检查与使用不同步」拆成三种后果互不相同的缺陷：引用计数与解锁的顺序错误导致 UAF（CVE-2025-38349）、锁顺序与 GC 路径导致死锁（CVE-2024-35970）、路径组件在解析期间被替换（`LOOKUP_NO_SYMLINKS`／`LOOKUP_BENEATH` 依赖 `rename_lock`/`mount_lock` 检测、`d_lookup()` 只检测不阻止）；另含 `refcount_t` 与 RCU 的官方语义边界（宽限期只等已存在的读者）、lockdep 的检查对象与「不自动识别天然嵌套顺序」的盲区、三行公告表逐格取证、lockdep/debugobjects/KASAN/Scudo 的可见性矩阵、七种成因模式与 12 条误传纠正
 - **无障碍、输入法与自动填充通道手册**：[android-accessibility-ime-autofill.md](/android-accessibility-ime-autofill/)
   把「辅助功能能看到别人应用里的内容」拆成三条授权方式不同的通道：`BIND_ACCESSIBILITY_SERVICE`／`BIND_INPUT_METHOD`／`BIND_AUTOFILL_SERVICE` 都是 `signature` 级，约束的是「谁能绑定」而非「能看多少」；输入法经 `InputConnection` 拿到正在输入的明文、全屏提取视图把文本画进输入法自己的窗口、密码只剩 `InputType` 变体与一句 Caution；自动填充拿到**前台应用**整棵 `AssistStructure`、`importantForAutofill` 只有五个取值（无 `excludeDescendants`）、`FLAG_SECURE` 不阻止自动填充；无障碍侧的收紧是 targetSdk 23 门槛、Android 13 受限设置、Android 14 `accessibilityDataSensitive` 与 `isAccessibilityTool` 的双边约定；含 11 条公告台账（含修复提交落点）、六种成因模式、14 条误传纠正与 10 组未核实项
+- **账户、凭据与无密码认证手册**：[android-accounts-credentials-passkeys.md](/android-accounts-credentials-passkeys/)
+  把「证明你是你」拆成三条绑定对象不同的链路：`AccountManager` 的账户只由 `name` + `type` 标识、数据在 system_server 而认证器在应用进程，`GET_ACCOUNTS` 自 targetSdk 26 起「不被使用」、真正的门槛是五档可见性（同 UID 恒可见，同签名只是可被用户撤销的 `USER_MANAGED_VISIBLE`），`peekAuthToken` 需与认证器签名匹配；凭据管理器是平台 API（Android 14 起的提供方）与 Jetpack 双轨，密码能力到 API 19、Passkey 到 API 28、库 minSdk 23，创建侧字段是 `registrationResponseJson` 而非 `creationResponseJson`，提供方要覆写的是带 `Request` 的三个抽象方法；Passkey 的信任根是 RP ID 域名，`assetlinks.json` 用 `get_login_creds` 共享凭据、`handle_all_urls` 只用于 App Links；含 14 条账户类 CVE 台账（逐条回到 CVE 描述核对 `AccountManagerService.java` 落点）、六种成因模式、17 条误传纠正与 10 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
