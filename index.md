@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十五份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十六份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十五份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十六份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -85,6 +85,8 @@ permalink: /
   四道性质不同的防线：Scudo 的 chunk header 校验与 quarantine（Android 11 起默认，但低内存设备仍用 jemalloc）、MTE 的 tag 传递与 SYNC/ASYNC 失败语义（App 默认关闭、需 bootloader 配合、内核 MTE-KASAN 是另一套开关）、HWASan 与 GWP-ASan 的适用面与 1% 采样、以及靠零初始化（Android 12 起，不含 zygote 与 App）与 Rust（仅覆盖新代码）消除整类缺陷；含 86%→不足 20% 的官方曲线、11 行防护矩阵、公告表头 `Component`/`Subcomponent` 陷阱、18 条误传纠正与 7 组未核实项
 - **竞态条件与 TOCTOU 手册**：[android-race-conditions-toctou.md](/android-race-conditions-toctou/)
   把「检查与使用不同步」拆成三种后果互不相同的缺陷：引用计数与解锁的顺序错误导致 UAF（CVE-2025-38349）、锁顺序与 GC 路径导致死锁（CVE-2024-35970）、路径组件在解析期间被替换（`LOOKUP_NO_SYMLINKS`／`LOOKUP_BENEATH` 依赖 `rename_lock`/`mount_lock` 检测、`d_lookup()` 只检测不阻止）；另含 `refcount_t` 与 RCU 的官方语义边界（宽限期只等已存在的读者）、lockdep 的检查对象与「不自动识别天然嵌套顺序」的盲区、三行公告表逐格取证、lockdep/debugobjects/KASAN/Scudo 的可见性矩阵、七种成因模式与 12 条误传纠正
+- **无障碍、输入法与自动填充通道手册**：[android-accessibility-ime-autofill.md](/android-accessibility-ime-autofill/)
+  把「辅助功能能看到别人应用里的内容」拆成三条授权方式不同的通道：`BIND_ACCESSIBILITY_SERVICE`／`BIND_INPUT_METHOD`／`BIND_AUTOFILL_SERVICE` 都是 `signature` 级，约束的是「谁能绑定」而非「能看多少」；输入法经 `InputConnection` 拿到正在输入的明文、全屏提取视图把文本画进输入法自己的窗口、密码只剩 `InputType` 变体与一句 Caution；自动填充拿到**前台应用**整棵 `AssistStructure`、`importantForAutofill` 只有五个取值（无 `excludeDescendants`）、`FLAG_SECURE` 不阻止自动填充；无障碍侧的收紧是 targetSdk 23 门槛、Android 13 受限设置、Android 14 `accessibilityDataSensitive` 与 `isAccessibilityTool` 的双边约定；含 11 条公告台账（含修复提交落点）、六种成因模式、14 条误传纠正与 10 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
