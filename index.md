@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十八份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十九份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十八份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十九份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -91,6 +91,8 @@ permalink: /
   把「证明你是你」拆成三条绑定对象不同的链路：`AccountManager` 的账户只由 `name` + `type` 标识、数据在 system_server 而认证器在应用进程，`GET_ACCOUNTS` 自 targetSdk 26 起「不被使用」、真正的门槛是五档可见性（同 UID 恒可见，同签名只是可被用户撤销的 `USER_MANAGED_VISIBLE`），`peekAuthToken` 需与认证器签名匹配；凭据管理器是平台 API（Android 14 起的提供方）与 Jetpack 双轨，密码能力到 API 19、Passkey 到 API 28、库 minSdk 23，创建侧字段是 `registrationResponseJson` 而非 `creationResponseJson`，提供方要覆写的是带 `Request` 的三个抽象方法；Passkey 的信任根是 RP ID 域名，`assetlinks.json` 用 `get_login_creds` 共享凭据、`handle_all_urls` 只用于 App Links；含 14 条账户类 CVE 台账（逐条回到 CVE 描述核对 `AccountManagerService.java` 落点）、六种成因模式、17 条误传纠正与 10 组未核实项
 - **蓝牙与 BLE 配对、绑定与权限模型手册**：[android-bluetooth-ble-pairing-permissions.md](/android-bluetooth-ble-pairing-permissions/)
   把「配对就安全了」拆成五段：发现／连接／配对／绑定／授权访问，权限侧讲清 Android 12 三件套为什么是三种能力（`BLUETOOTH_SCAN`／`ADVERTISE`／`CONNECT`）、`neverForLocation` 是应用承诺且会让系统过滤部分 beacon、定位耦合看 `targetSdk` 而非设备版本、CDM 代扫只绕过定位不绕过 `CONNECT`；协议侧讲清 SSP 四种关联模型与 MITM 的真实对应（Just Works 不防中间人）、LE Legacy 与 LE Secure Connections 的分界、LTK/IRK/CSRK 都由栈持有且无公开 API；绑定侧讲清 `BOND_BONDED` 只表示本地存有 link key、`setPairingConfirmation` 需 `BLUETOOTH_PRIVILEGED`、`ACTION_PAIRING_REQUEST` 只能收不能伪造、Android 16 改为断开链路并保留本地绑定、解绑不承诺对端删密钥；GATT 侧讲清 `PERMISSION_READ_ENCRYPTED` 与 `_ENCRYPTED_MITM` 不是一回事、栈只强制安全位；含 11 条公告台账（逐条核对 `System` 节与 `packages/modules/Bluetooth` 补丁路径）、六种成因模式、22 条误传纠正与 12 组未核实项
+- **USB 主机、配件与有线外设攻击面手册**：[android-usb-host-accessory-peripherals.md](/android-usb-host-accessory-peripherals/)
+  把「插上 USB」拆成三条角色不同的路径：主机模式由手机供电并枚举、配件模式（AOA）由配件供电并枚举、设备侧 gadget 由对端主机枚举；权限侧讲清 `requestPermission` 的授权只到设备断开为止、`UsbManager.ACTION_USB_PERMISSION` 并不存在（官方示例用应用自定义 action）、intent-filter + `device_filter.xml` 会弹「是否打开此应用」而非静默授权、空过滤器匹配所有设备、UVC 设备还需 `CAMERA` 权限；外设侧讲清 HID 直达 `InputReader`、音频走 HAL、RNDIS/NCM 进入网络栈、Android 无官方 UMS，以及 MTP 只在解锁后挂载共享存储、PTP 仅暴露 `DCIM`/`Pictures`、不暴露 `/data`；设备侧讲清 `IUsbGadget` 与 `GadgetFunction` 功能位、configfs 由特权域写入、ADB 的三道门与 `ro.adb.secure`、Android 12 起的 USB 数据信令企业策略；另含 USB-C 角色与 Alt Mode（无 `MODE_DRP`、框架不解析 PD）、14 条已核实公告台账与两条「公告措辞≠真实组件」案例、六种成因模式、12 条误传纠正与 10 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
