@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十二份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十三份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十二份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十三份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -79,6 +79,8 @@ permalink: /
   把「模型文件」当作文档型攻击面来审：NNAPI 自 Android 15 弃用（官方建议迁移 TF Lite GPU runtime）、控制面走 Binder 而张量走共享内存、HAL 驱动在 vendor 进程、TFLite 以 `TFL3` 标识且权重是模型自己写的偏移+长度；另含形状乘法溢出、Burst slot 复用导致的 buffer 重叠、delegate 把参数带进 GPU/NPU 驱动、模型热更新等于远程输入入口；含 13 条误传纠正与 5 组未核实项
 - **Verified Boot 与 dm-verity 验证链手册**：[android-verified-boot-chain.md](/android-verified-boot-chain/)
   把「验证通过」拆成四段与四个断点：硬件信任根→bootloader→`vbmeta`（`AVB0`）→分区的 hash/hashtree/chain 描述符；另含 AVB 自 Android 8.0（7.0 强化的是 dm-verity）、`HASHTREE_DISABLED`/`VERIFICATION_DISABLED` 两个逃生标志、`veritymode` 的 enforcing/logging/disabled、动态分区 dm-linear 后叠 dm-verity、rollback index 与降级、四种启动状态里 yellow 与 orange 的区别；含 13 条误传纠正与 4 组未核实项
+- **虚拟化与隔离边界手册**：[android-virtualization-isolation.md](/android-virtualization-isolation/)
+  五层隔离边界逐层取证：应用沙箱的 UID/DAC、Android 8.0 起「all apps」受 seccomp-bpf 约束、Android 9 起按应用的 SELinux 沙箱如何叠加；AVF 自 Android 13 引入且官方明确不取代 TrustZone；pKVM 不是新 hypervisor 而是把「约束宿主」搬进 EL2，普通 KVM 因宿主态关闭 stage-2 给不了 pVM 级机密性；pVM 只保证机密性与完整性，可用性明确例外、OEM 与 SoC 仍在信任集内；Microdroid 用 Bionic/Binder/APEX 换来的富环境如何变成新的接口面；Trusty 与 StrongBox 两条并列边界；公告中 `pKVM` 与 `Kernel Virtual Machine` 两个不同子组件的实证；17 条误传纠正、观测清单与 8 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
