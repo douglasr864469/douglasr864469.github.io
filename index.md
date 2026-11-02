@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十四份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十五份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十四份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、三十五份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -83,6 +83,8 @@ permalink: /
   五层隔离边界逐层取证：应用沙箱的 UID/DAC、Android 8.0 起「all apps」受 seccomp-bpf 约束、Android 9 起按应用的 SELinux 沙箱如何叠加；AVF 自 Android 13 引入且官方明确不取代 TrustZone；pKVM 不是新 hypervisor 而是把「约束宿主」搬进 EL2，普通 KVM 因宿主态关闭 stage-2 给不了 pVM 级机密性；pVM 只保证机密性与完整性，可用性明确例外、OEM 与 SoC 仍在信任集内；Microdroid 用 Bionic/Binder/APEX 换来的富环境如何变成新的接口面；Trusty 与 StrongBox 两条并列边界；公告中 `pKVM` 与 `Kernel Virtual Machine` 两个不同子组件的实证；17 条误传纠正、观测清单与 8 组未核实项
 - **原生内存安全与分配器手册**：[android-memory-safety-allocators.md](/android-memory-safety-allocators/)
   四道性质不同的防线：Scudo 的 chunk header 校验与 quarantine（Android 11 起默认，但低内存设备仍用 jemalloc）、MTE 的 tag 传递与 SYNC/ASYNC 失败语义（App 默认关闭、需 bootloader 配合、内核 MTE-KASAN 是另一套开关）、HWASan 与 GWP-ASan 的适用面与 1% 采样、以及靠零初始化（Android 12 起，不含 zygote 与 App）与 Rust（仅覆盖新代码）消除整类缺陷；含 86%→不足 20% 的官方曲线、11 行防护矩阵、公告表头 `Component`/`Subcomponent` 陷阱、18 条误传纠正与 7 组未核实项
+- **竞态条件与 TOCTOU 手册**：[android-race-conditions-toctou.md](/android-race-conditions-toctou/)
+  把「检查与使用不同步」拆成三种后果互不相同的缺陷：引用计数与解锁的顺序错误导致 UAF（CVE-2025-38349）、锁顺序与 GC 路径导致死锁（CVE-2024-35970）、路径组件在解析期间被替换（`LOOKUP_NO_SYMLINKS`／`LOOKUP_BENEATH` 依赖 `rename_lock`/`mount_lock` 检测、`d_lookup()` 只检测不阻止）；另含 `refcount_t` 与 RCU 的官方语义边界（宽限期只等已存在的读者）、lockdep 的检查对象与「不自动识别天然嵌套顺序」的盲区、三行公告表逐格取证、lockdep/debugobjects/KASAN/Scudo 的可见性矩阵、七种成因模式与 12 条误传纠正
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
