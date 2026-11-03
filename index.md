@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十一份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十二份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十一份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十二份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -97,6 +97,8 @@ permalink: /
   把「打开一个媒体文件」拆成取数／解复用／解码／输出四段：Android 7.0 把单体 `mediaserver` 拆成 `mediaextractor`（UID 1040）、`media.codec`、`audioserver`、`cameraserver` 等独立进程，Android 10 又把软解移入 APEX 里的 `media.swcodec`（UID 1046，`mediacodec` 用户）；沙箱侧逐条列出 `mediaextractor` 能读 fd 但不能 `open` 应用数据、`mediaswcodec` 只有 GPU/dmabuf 而无应用数据与视频设备、`MediaExtractor` 默认经 `media.stagefright.extractremote` 走远程解析、`MediaParser`（API 30，非 12）默认在应用进程内解析、`MediaMetadataRetriever` 仍需绕经 `mediaserver` 与解析器两跳；解码侧讲清 `c2.`/`omx.` 前缀分派、软解与硬解的补丁节奏差异、`isSoftwareOnly` 与 API 36 的 `getSecurityModel`；含 27 条已核实公告台账（2015 Stagefright 批次、libavc/libhevc/libmpeg2/aac、容器解析与 EoP）、六种成因模式、13 条误传纠正与 14 组未核实项
 - **窗口管理、悬浮窗与界面覆盖（tapjacking）攻击面手册**：[android-window-overlay-tapjacking.md](/android-window-overlay-tapjacking/)
   把「用户看到的就是他点到的那一层」拆成四段：窗口分层、触摸命中、覆盖授权、遮挡判定。类型侧列清 `TYPE_SYSTEM_ALERT` 是 2003（2002 才是 `TYPE_PHONE`）、`TYPE_TOAST` 2005、`TYPE_APPLICATION_OVERLAY` 2038 必须叠在 Activity 之上且位于状态栏与输入法之下；权限侧讲清 `SYSTEM_ALERT_WINDOW` 的 `signature|setup|appop|installer|pre23|development` 与 AppOps 兜底、`Settings.canDrawOverlays` 只是建议、Bubbles 与 PiP 不需要该权限、`HIDE_OVERLAY_WINDOWS` 是 `normal` 级；输入侧讲清 `FLAG_WINDOW_IS_OBSCURED` 与 `FLAG_WINDOW_IS_PARTIALLY_OBSCURED` 的差别、`setFilterTouchesWhenObscured` 只认全遮挡、Android 12 起非受信覆盖层的穿透触摸被直接拦截（可信仅限无障碍／输入法／助手，组合不透明度按 `1 - Π(1-opacity)` 计算且 >0.8 才拦）；含 14 条核心公告台账与 16 条应用对话框台账、六种成因模式、16 条误传纠正与 14 组未核实项
+- **通知、状态栏与通知监听攻击面手册**：[android-notification-statusbar-listener.md](/android-notification-statusbar-listener/)
+  把「一条通知」拆成提交／入队／排序／分发／呈现／交互六段：`NotificationManagerService` 在 system_server 而非 SystemUI、渠道重要性的公开档位与 `IMPORTANCE_MAX` 系统保留、`POST_NOTIFICATIONS` 的预授予与前台服务通知降级、通知监听器的 `signature` 级绑定权限与「授权范围内可见」边界（工作资料监听器被忽略）、`PendingIntent` 可变性自 Android 12 起必须显式而非默认不可变、全屏意图自 Android 14 起限通话/闹钟、Android 15 对不受信监听器的验证码脱敏与投屏隐藏；含 24 条已核实公告台账（20 条通知服务/监听接口 + 4 条锁屏与相邻组件，逐条回到 NVD 的类/方法落点核对）、六种成因模式、14 条误传纠正与 12 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
