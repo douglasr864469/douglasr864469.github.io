@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十一份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十一份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -95,6 +95,8 @@ permalink: /
   把「插上 USB」拆成三条角色不同的路径：主机模式由手机供电并枚举、配件模式（AOA）由配件供电并枚举、设备侧 gadget 由对端主机枚举；权限侧讲清 `requestPermission` 的授权只到设备断开为止、`UsbManager.ACTION_USB_PERMISSION` 并不存在（官方示例用应用自定义 action）、intent-filter + `device_filter.xml` 会弹「是否打开此应用」而非静默授权、空过滤器匹配所有设备、UVC 设备还需 `CAMERA` 权限；外设侧讲清 HID 直达 `InputReader`、音频走 HAL、RNDIS/NCM 进入网络栈、Android 无官方 UMS，以及 MTP 只在解锁后挂载共享存储、PTP 仅暴露 `DCIM`/`Pictures`、不暴露 `/data`；设备侧讲清 `IUsbGadget` 与 `GadgetFunction` 功能位、configfs 由特权域写入、ADB 的三道门与 `ro.adb.secure`、Android 12 起的 USB 数据信令企业策略；另含 USB-C 角色与 Alt Mode（无 `MODE_DRP`、框架不解析 PD）、14 条已核实公告台账与两条「公告措辞≠真实组件」案例、六种成因模式、12 条误传纠正与 10 组未核实项
 - **媒体解码与容器解析攻击面手册**：[android-media-codec-container-parsing.md](/android-media-codec-container-parsing/)
   把「打开一个媒体文件」拆成取数／解复用／解码／输出四段：Android 7.0 把单体 `mediaserver` 拆成 `mediaextractor`（UID 1040）、`media.codec`、`audioserver`、`cameraserver` 等独立进程，Android 10 又把软解移入 APEX 里的 `media.swcodec`（UID 1046，`mediacodec` 用户）；沙箱侧逐条列出 `mediaextractor` 能读 fd 但不能 `open` 应用数据、`mediaswcodec` 只有 GPU/dmabuf 而无应用数据与视频设备、`MediaExtractor` 默认经 `media.stagefright.extractremote` 走远程解析、`MediaParser`（API 30，非 12）默认在应用进程内解析、`MediaMetadataRetriever` 仍需绕经 `mediaserver` 与解析器两跳；解码侧讲清 `c2.`/`omx.` 前缀分派、软解与硬解的补丁节奏差异、`isSoftwareOnly` 与 API 36 的 `getSecurityModel`；含 27 条已核实公告台账（2015 Stagefright 批次、libavc/libhevc/libmpeg2/aac、容器解析与 EoP）、六种成因模式、13 条误传纠正与 14 组未核实项
+- **窗口管理、悬浮窗与界面覆盖（tapjacking）攻击面手册**：[android-window-overlay-tapjacking.md](/android-window-overlay-tapjacking/)
+  把「用户看到的就是他点到的那一层」拆成四段：窗口分层、触摸命中、覆盖授权、遮挡判定。类型侧列清 `TYPE_SYSTEM_ALERT` 是 2003（2002 才是 `TYPE_PHONE`）、`TYPE_TOAST` 2005、`TYPE_APPLICATION_OVERLAY` 2038 必须叠在 Activity 之上且位于状态栏与输入法之下；权限侧讲清 `SYSTEM_ALERT_WINDOW` 的 `signature|setup|appop|installer|pre23|development` 与 AppOps 兜底、`Settings.canDrawOverlays` 只是建议、Bubbles 与 PiP 不需要该权限、`HIDE_OVERLAY_WINDOWS` 是 `normal` 级；输入侧讲清 `FLAG_WINDOW_IS_OBSCURED` 与 `FLAG_WINDOW_IS_PARTIALLY_OBSCURED` 的差别、`setFilterTouchesWhenObscured` 只认全遮挡、Android 12 起非受信覆盖层的穿透触摸被直接拦截（可信仅限无障碍／输入法／助手，组合不透明度按 `1 - Π(1-opacity)` 计算且 >0.8 才拦）；含 14 条核心公告台账与 16 条应用对话框台账、六种成因模式、16 条误传纠正与 14 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
