@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十二份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十三份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十二份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十三份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -99,6 +99,8 @@ permalink: /
   把「用户看到的就是他点到的那一层」拆成四段：窗口分层、触摸命中、覆盖授权、遮挡判定。类型侧列清 `TYPE_SYSTEM_ALERT` 是 2003（2002 才是 `TYPE_PHONE`）、`TYPE_TOAST` 2005、`TYPE_APPLICATION_OVERLAY` 2038 必须叠在 Activity 之上且位于状态栏与输入法之下；权限侧讲清 `SYSTEM_ALERT_WINDOW` 的 `signature|setup|appop|installer|pre23|development` 与 AppOps 兜底、`Settings.canDrawOverlays` 只是建议、Bubbles 与 PiP 不需要该权限、`HIDE_OVERLAY_WINDOWS` 是 `normal` 级；输入侧讲清 `FLAG_WINDOW_IS_OBSCURED` 与 `FLAG_WINDOW_IS_PARTIALLY_OBSCURED` 的差别、`setFilterTouchesWhenObscured` 只认全遮挡、Android 12 起非受信覆盖层的穿透触摸被直接拦截（可信仅限无障碍／输入法／助手，组合不透明度按 `1 - Π(1-opacity)` 计算且 >0.8 才拦）；含 14 条核心公告台账与 16 条应用对话框台账、六种成因模式、16 条误传纠正与 14 组未核实项
 - **通知、状态栏与通知监听攻击面手册**：[android-notification-statusbar-listener.md](/android-notification-statusbar-listener/)
   把「一条通知」拆成提交／入队／排序／分发／呈现／交互六段：`NotificationManagerService` 在 system_server 而非 SystemUI、渠道重要性的公开档位与 `IMPORTANCE_MAX` 系统保留、`POST_NOTIFICATIONS` 的预授予与前台服务通知降级、通知监听器的 `signature` 级绑定权限与「授权范围内可见」边界（工作资料监听器被忽略）、`PendingIntent` 可变性自 Android 12 起必须显式而非默认不可变、全屏意图自 Android 14 起限通话/闹钟、Android 15 对不受信监听器的验证码脱敏与投屏隐藏；含 24 条已核实公告台账（20 条通知服务/监听接口 + 4 条锁屏与相邻组件，逐条回到 NVD 的类/方法落点核对）、六种成因模式、14 条误传纠正与 12 组未核实项
+- **电源管理、唤醒锁与闹钟调度攻击面手册**：[android-power-wakelock-alarm.md](/android-power-wakelock-alarm/)
+  把「熄屏后谁还能跑」拆成四套状态机：`PowerManagerService`（system_server）结算唤醒锁、`AlarmManagerService` 与 `DeviceIdleController` 位于 jobscheduler APEX、`AppStandbyController` 负责分桶；讲清 `WAKE_LOCK` 普通权限与「保活」无关、Doze 忽略唤醒锁、精确闹钟两套权限（`SCHEDULE_EXACT_ALARM` 可撤销 / `USE_EXACT_ALARM` 受政策限制）、`setExactAndAllowWhileIdle` 约 9 分钟量级；含 6 条已核实公告台账、六种成因模式、5 条误传纠正与 5 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
