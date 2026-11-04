@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十三份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十四份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十三份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十四份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -101,6 +101,8 @@ permalink: /
   把「一条通知」拆成提交／入队／排序／分发／呈现／交互六段：`NotificationManagerService` 在 system_server 而非 SystemUI、渠道重要性的公开档位与 `IMPORTANCE_MAX` 系统保留、`POST_NOTIFICATIONS` 的预授予与前台服务通知降级、通知监听器的 `signature` 级绑定权限与「授权范围内可见」边界（工作资料监听器被忽略）、`PendingIntent` 可变性自 Android 12 起必须显式而非默认不可变、全屏意图自 Android 14 起限通话/闹钟、Android 15 对不受信监听器的验证码脱敏与投屏隐藏；含 24 条已核实公告台账（20 条通知服务/监听接口 + 4 条锁屏与相邻组件，逐条回到 NVD 的类/方法落点核对）、六种成因模式、14 条误传纠正与 12 组未核实项
 - **电源管理、唤醒锁与闹钟调度攻击面手册**：[android-power-wakelock-alarm.md](/android-power-wakelock-alarm/)
   把「熄屏后谁还能跑」拆成四套状态机：`PowerManagerService`（system_server）结算唤醒锁、`AlarmManagerService` 与 `DeviceIdleController` 位于 jobscheduler APEX、`AppStandbyController` 负责分桶；讲清 `WAKE_LOCK` 普通权限与「保活」无关、Doze 忽略唤醒锁、精确闹钟两套权限（`SCHEDULE_EXACT_ALARM` 可撤销 / `USE_EXACT_ALARM` 受政策限制）、`setExactAndAllowWhileIdle` 约 9 分钟量级；含 6 条已核实公告台账、六种成因模式、5 条误传纠正与 5 组未核实项
+- **剪贴板、拖放与跨应用数据传递攻击面手册**：[android-clipboard-drag-drop.md](/android-clipboard-drag-drop/)
+  把「复制粘贴」拆成写入／持有／读取／授权／呈现五段：`ClipboardService` 在 system_server、Android 10 起仅默认输入法与焦点应用可读且无助理豁免、`newUri()` 不授权而粘贴时临时授读、拖放四类 URI 标志默认临时；另含首次读取 toast 与 `EXTRA_IS_SENSITIVE` 只影响预览、`DRAG_FLAG_GLOBAL_SAME_APPLICATION`（API 35）；含 6 条公告台账（区分 URI 授权服务、内容提供者与剪贴板类）、六种成因模式、6 条误传纠正与 4 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
