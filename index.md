@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十四份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十五份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十四份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十五份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -103,6 +103,8 @@ permalink: /
   把「熄屏后谁还能跑」拆成四套状态机：`PowerManagerService`（system_server）结算唤醒锁、`AlarmManagerService` 与 `DeviceIdleController` 位于 jobscheduler APEX、`AppStandbyController` 负责分桶；讲清 `WAKE_LOCK` 普通权限与「保活」无关、Doze 忽略唤醒锁、精确闹钟两套权限（`SCHEDULE_EXACT_ALARM` 可撤销 / `USE_EXACT_ALARM` 受政策限制）、`setExactAndAllowWhileIdle` 约 9 分钟量级；含 6 条已核实公告台账、六种成因模式、5 条误传纠正与 5 组未核实项
 - **剪贴板、拖放与跨应用数据传递攻击面手册**：[android-clipboard-drag-drop.md](/android-clipboard-drag-drop/)
   把「复制粘贴」拆成写入／持有／读取／授权／呈现五段：`ClipboardService` 在 system_server、Android 10 起仅默认输入法与焦点应用可读且无助理豁免、`newUri()` 不授权而粘贴时临时授读、拖放四类 URI 标志默认临时；另含首次读取 toast 与 `EXTRA_IS_SENSITIVE` 只影响预览、`DRAG_FLAG_GLOBAL_SAME_APPLICATION`（API 35）；含 6 条公告台账（区分 URI 授权服务、内容提供者与剪贴板类）、六种成因模式、6 条误传纠正与 4 组未核实项
+- **打印、PDF 与文档渲染通路攻击面手册**：[android-print-pdf-rendering.md](/android-print-pdf-rendering/)
+  把「打印」拆成发起／绑定／写入／暂存／投递／输出六段：`PrintService` 是公开基类（`BIND_PRINT_SERVICE` 限绑定方不限实现）、`onWrite()` 写入 spooler 管道 FD 且不可 seek、「另存为 PDF」是假打印机 + SAF 而非打印服务；PDF 侧讲清 `PdfRenderer` 用 pdfium、`PdfDocument` 用 Skia 两条技术栈；含 4 条已核实公告台账、六种成因模式、5 条误传纠正与 5 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
