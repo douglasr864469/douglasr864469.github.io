@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十六份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十七份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十六份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十七份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -107,6 +107,8 @@ permalink: /
   把「打印」拆成发起／绑定／写入／暂存／投递／输出六段：`PrintService` 是公开基类（`BIND_PRINT_SERVICE` 限绑定方不限实现）、`onWrite()` 写入 spooler 管道 FD 且不可 seek、「另存为 PDF」是假打印机 + SAF 而非打印服务；PDF 侧讲清 `PdfRenderer` 用 pdfium、`PdfDocument` 用 Skia 两条技术栈；含 4 条已核实公告台账、六种成因模式、5 条误传纠正与 5 组未核实项
 - **字体、文本整形与渲染栈攻击面手册**：[android-font-text-rendering.md](/android-font-text-rendering/)
   把「一段文字到像素」拆成字符处理／选字体／整形／字形加载／栅格化／排版六段：`FontManagerService` 只在 system_server 分发映射，Minikin/HarfBuzz/FreeType 运行在应用进程；讲清「字体更新 APK」不成立（字体文件 + PKCS#7 + fs-verity + `config_fontManagerServiceCerts`）、可变字体与 COLRv1 的解析风险、downloadable fonts 只为本应用取字；含 7 条公告台账、七种成因模式、5 条误传纠正与 4 组未核实项
+- **DRM 与受保护媒体通路攻击面手册**：[android-drm-protected-media.md](/android-drm-protected-media/)
+  把「受保护播放」拆成选方案／供应／取密钥／装密钥／建会话／配置解码／解密／显示八段：应用只见不透明请求与会话 ID、现行安全级别是 0–5 而非 L1/L2/L3、`MediaFormat` 无 `KEY_CRYPTO`（用 `FEATURE_SecurePlayback` + `MediaCrypto` + `.secure`）、HDCP 只能查询不能强制；含 5 条公告台账（mediadrm/Widevine/cdm_engine）、六种成因模式、7 条误传纠正与 5 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
