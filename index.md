@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十三份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十四份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十三份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十四份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -121,6 +121,8 @@ permalink: /
   把「设备 ID」拆成硬件／系统／服务／推断四层：IMEI 与序列号自 Android 10 起收进 `READ_PRIVILEGED_PHONE_STATE`、`ANDROID_ID` 自 8.0 起按「签名＋用户＋设备」派生（同签名重装不变、换签名会变）、广告 ID 可重置且 Android 12 起可删除并返回全零、Wi-Fi MAC 从恒零到按网络持久随机再到部分场景非持久随机；推断层讲清 Build 字段、传感器清单与 `QUERY_ALL_PACKAGES` 组合后仍具辨识度；含 3 条公告台账、五种成因模式、5 条误传纠正与 5 组未核实项
 - **UWB 超宽带测距与安全测距攻击面手册**：[android-uwb-ranging-security.md](/android-uwb-ranging-security/)
   把「测到距离」拆成框架／模块／HAL／协议四层：`android.uwb` 没有公开的 `UwbAdapter` 类（只有 `IUwbAdapter.aidl`）、第三方走 `androidx.core.uwb`、`UWB_RANGING` 危险权限＋前台＋`android.hardware.uwb` 特性构成三道门；安全测距讲清 static STS 对重放/中继偏弱、provisioned STS 依赖安全带外分发、STS 不等于完整的 distance bounding；身份来自带外通道而非 UWB 本身，CCC Digital Key 3.0 正是 BLE 认证＋UWB 测距＋NFC 后备；并如实说明未检索到「越权测距」类公开 CVE；含 4 条公告台账、五种成因模式、5 条误传纠正与 5 组未核实项
+- **时间、时区与网络授时的安全边界手册**：[android-time-timezone-ntp.md](/android-time-timezone-ntp/)
+  把「现在几点」拆成 RTC／墙钟／单调时钟／授时源四路：`/dev/alarm` 在 Android 8.0 被内核 alarmtimer 取代、AOSP 的 SNTP 客户端无认证且未实现 NTS、NITZ 的信任基础是运营商、Android 12 起默认 NTP 优先于 NITZ；权限侧讲清 `SET_TIME`／`SET_TIME_ZONE` 是 signature|privileged|role、DPM 自动时间接口限 owner、`DISALLOW_CONFIG_DATE_TIME` 是用户限制；影响侧讲清 TLS 的本地校验、Play Integrity 判决须由服务端判新鲜度、密钥证明字段与 AVB 回滚索引不依赖本地时间、TOTP 防线在服务端；含 4 条公告台账、五种成因模式、5 条误传纠正与 5 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
