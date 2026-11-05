@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十八份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十九份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十八份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、四十九份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -111,6 +111,8 @@ permalink: /
   把「受保护播放」拆成选方案／供应／取密钥／装密钥／建会话／配置解码／解密／显示八段：应用只见不透明请求与会话 ID、现行安全级别是 0–5 而非 L1/L2/L3、`MediaFormat` 无 `KEY_CRYPTO`（用 `FEATURE_SecurePlayback` + `MediaCrypto` + `.secure`）、HDCP 只能查询不能强制；含 5 条公告台账（mediadrm/Widevine/cdm_engine）、六种成因模式、7 条误传纠正与 5 组未核实项
 - **企业设备管理、托管配置与工作资料攻击面手册**：[android-enterprise-device-management.md](/android-enterprise-device-management/)
   把「企业管控」拆成角色／权限／配置／资料／策略五层：legacy admin 只执行 XML 声明策略、Device Owner 仅能在初始化阶段设定、`PROVISION_DEVICE_OWNER` 权限不存在（用 `MANAGE_PROFILE_AND_DEVICE_OWNERS` 或 shell、配置消息用 `DISPATCH_PROVISIONING_MESSAGE`）、工作资料即 secondary user；含 Android 12 provisioning 流程变化、4 条公告台账、六种成因模式、5 条误传纠正与 4 组未核实项
+- **MediaProjection、屏幕录制与投屏通路攻击面手册**：[android-media-projection-screen-capture.md](/android-media-projection-screen-capture/)
+  把「录屏」拆成意图／系统同意／框架服务／显示缓冲四层：`createScreenCaptureIntent` 只生成请求不授权、同意界面在 SystemUI 的 `MediaProjectionPermissionActivity` 而非某个「MediaProjectionService」、会话与令牌由 system_server 的 `MediaProjectionManagerService` 持有；Android 14 起每次会话重新授权、target 34+ 必须 `FOREGROUND_SERVICE_MEDIA_PROJECTION` 前台服务、同意界面区分单应用与整屏两种范围；权限侧区分 `CAPTURE_VIDEO_OUTPUT`（signature）、`DETECT_SCREEN_CAPTURE`／`DETECT_SCREEN_RECORDING`（normal）与 `MANAGE_MEDIA_PROJECTION`；数据侧讲清 `FLAG_SECURE` 安全图层在合成层就黑屏、DRM 行为随级别与输出保护而变、音频是独立授权链；含 5 条公告台账、六种成因模式、5 条误传纠正与 4 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
