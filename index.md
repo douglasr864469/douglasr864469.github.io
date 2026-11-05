@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十一份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十一份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -115,6 +115,8 @@ permalink: /
   把「录屏」拆成意图／系统同意／框架服务／显示缓冲四层：`createScreenCaptureIntent` 只生成请求不授权、同意界面在 SystemUI 的 `MediaProjectionPermissionActivity` 而非某个「MediaProjectionService」、会话与令牌由 system_server 的 `MediaProjectionManagerService` 持有；Android 14 起每次会话重新授权、target 34+ 必须 `FOREGROUND_SERVICE_MEDIA_PROJECTION` 前台服务、同意界面区分单应用与整屏两种范围；权限侧区分 `CAPTURE_VIDEO_OUTPUT`（signature）、`DETECT_SCREEN_CAPTURE`／`DETECT_SCREEN_RECORDING`（normal）与 `MANAGE_MEDIA_PROJECTION`；数据侧讲清 `FLAG_SECURE` 安全图层在合成层就黑屏、DRM 行为随级别与输出保护而变、音频是独立授权链；含 5 条公告台账、六种成因模式、5 条误传纠正与 4 组未核实项
 - **Binder 驱动与内核 IPC 实现攻击面手册**：[android-binder-driver-ipc.md](/android-binder-driver-ipc/)
   把「一次跨进程调用」拆成设备／对象／命令／缓冲四段：`/dev/binder`、`/dev/hwbinder`、`/dev/vndbinder` 与 binderfs 多实例共存、context manager 的 handle 0 按设备隔离、`binder_proc`／`node`／`ref`／`buffer` 的强引用弱引用与死亡通知；命令侧讲清 `BC_`／`BR_` 语义、oneway 仍占异步配额并会收到 `BR_DEAD_REPLY`／`BR_ONEWAY_SPAM_SUSPECT`、`BINDER_SET_MAX_THREADS` 默认 15 且不存在同名内核接口；归因侧讲清 `sender_euid` 由驱动写入而非调用方自报、SELinux `binder { call transfer set_context_mgr impersonate }` 才是真正的门；缺陷集中在长度偏移核算、释放路径与等待队列；含 6 条公告台账、五种成因模式、5 条误传纠正与 5 组未核实项
+- **AppOps 与运行时权限的底层执行路径手册**：[android-appops-permission-enforcement.md](/android-appops-permission-enforcement/)
+  把「应用有没有权限」拆成权限状态机与 AppOps 状态机两套：`PermissionManagerServiceImpl` 记录授予标志与来源、`AppOpsService` 在 system_server 按 uid＋包名＋op 记录 `MODE_ALLOWED`／`IGNORED`／`ERRORED`／`DEFAULT`；一次访问要经 checkPermission → Binder → `noteOp`／`startOp` → 数据方判定，只查权限位就放行是典型「检查了但没执行」；讲清 `unsafeCheckOp` 不能当授权依据、`FLAG_PERMISSION_ONE_TIME` 是加在普通权限上的标志而非权限类型、特殊访问入口在设置页；含 4 条公告台账（安装会话与存储过滤等权限服务之外的落点也在此列）、六种成因模式、5 条误传纠正与 4 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
