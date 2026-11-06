@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十四份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十五份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十四份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十五份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -123,6 +123,8 @@ permalink: /
   把「测到距离」拆成框架／模块／HAL／协议四层：`android.uwb` 没有公开的 `UwbAdapter` 类（只有 `IUwbAdapter.aidl`）、第三方走 `androidx.core.uwb`、`UWB_RANGING` 危险权限＋前台＋`android.hardware.uwb` 特性构成三道门；安全测距讲清 static STS 对重放/中继偏弱、provisioned STS 依赖安全带外分发、STS 不等于完整的 distance bounding；身份来自带外通道而非 UWB 本身，CCC Digital Key 3.0 正是 BLE 认证＋UWB 测距＋NFC 后备；并如实说明未检索到「越权测距」类公开 CVE；含 4 条公告台账、五种成因模式、5 条误传纠正与 5 组未核实项
 - **时间、时区与网络授时的安全边界手册**：[android-time-timezone-ntp.md](/android-time-timezone-ntp/)
   把「现在几点」拆成 RTC／墙钟／单调时钟／授时源四路：`/dev/alarm` 在 Android 8.0 被内核 alarmtimer 取代、AOSP 的 SNTP 客户端无认证且未实现 NTS、NITZ 的信任基础是运营商、Android 12 起默认 NTP 优先于 NITZ；权限侧讲清 `SET_TIME`／`SET_TIME_ZONE` 是 signature|privileged|role、DPM 自动时间接口限 owner、`DISALLOW_CONFIG_DATE_TIME` 是用户限制；影响侧讲清 TLS 的本地校验、Play Integrity 判决须由服务端判新鲜度、密钥证明字段与 AVB 回滚索引不依赖本地时间、TOTP 防线在服务端；含 4 条公告台账、五种成因模式、5 条误传纠正与 5 组未核实项
+- **WhatsApp「群发」功能边界与反滥用手册**：[android-whatsapp-bulk-messaging-boundaries.md](/android-whatsapp-bulk-messaging-boundaries/)
+  把「群发」拆成广播列表／群组与社区／Business Platform 三条互不兼容的通道：广播列表上限 256 人且只有已保存发送方号码的人才会收到、多个列表相加也不能突破上限；群组上限 1,024 人、社区约 2,000 人，治理与邀请权另算；商业接口则另立 opt-in、24 小时客服窗口（窗口外只能发预先审核的模板）与模板质量评级（GREEN／YELLOW／RED，RED 暂停发送），限额在业务组合级按滚动 24 小时内的去重用户数统计，从 250 起逐级提额；并说明为何「群发软件」在条款、技术、法律与安全四面都走不通，给出账号／消息／接收方／企业四层反滥用机制、Android 客户端侧被篡改客户端与无障碍监听等风险、7 条合规运营清单；含 6 条误传纠正与 5 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
