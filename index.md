@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十五份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十六份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十五份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十六份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -125,6 +125,8 @@ permalink: /
   把「现在几点」拆成 RTC／墙钟／单调时钟／授时源四路：`/dev/alarm` 在 Android 8.0 被内核 alarmtimer 取代、AOSP 的 SNTP 客户端无认证且未实现 NTS、NITZ 的信任基础是运营商、Android 12 起默认 NTP 优先于 NITZ；权限侧讲清 `SET_TIME`／`SET_TIME_ZONE` 是 signature|privileged|role、DPM 自动时间接口限 owner、`DISALLOW_CONFIG_DATE_TIME` 是用户限制；影响侧讲清 TLS 的本地校验、Play Integrity 判决须由服务端判新鲜度、密钥证明字段与 AVB 回滚索引不依赖本地时间、TOTP 防线在服务端；含 4 条公告台账、五种成因模式、5 条误传纠正与 5 组未核实项
 - **WhatsApp「群发」功能边界与反滥用手册**：[android-whatsapp-bulk-messaging-boundaries.md](/android-whatsapp-bulk-messaging-boundaries/)
   把「群发」拆成广播列表／群组与社区／Business Platform 三条互不兼容的通道：广播列表上限 256 人且只有已保存发送方号码的人才会收到、多个列表相加也不能突破上限；群组上限 1,024 人、社区约 2,000 人，治理与邀请权另算；商业接口则另立 opt-in、24 小时客服窗口（窗口外只能发预先审核的模板）与模板质量评级（GREEN／YELLOW／RED，RED 暂停发送），限额在业务组合级按滚动 24 小时内的去重用户数统计，从 250 起逐级提额；并说明为何「群发软件」在条款、技术、法律与安全四面都走不通，给出账号／消息／接收方／企业四层反滥用机制、Android 客户端侧被篡改客户端与无障碍监听等风险、7 条合规运营清单；含 6 条误传纠正与 5 组未核实项
+- **WhatsApp「群控」滥用生态与防御手册**：[android-whatsapp-device-farms-abuse-defense.md](/android-whatsapp-device-farms-abuse-defense/)
+  把「群控」拆成账号／执行／编排／变现四层：账号层受《反电信网络诈骗法》第十四条直接规制（电话卡批量插入设备、批量账号与网络地址自动切换系统、批量接收短信/语音验证的平台）、执行层落到无障碍模拟操作／调试桥投屏／录屏识别回注／root 与定制 ROM／云手机与多开／修改版客户端六条路径，逐条给出权限代价与可见痕迹；条款侧逐句引用 WhatsApp 服务条款对自动化注册、批量与自动消息、封禁后另建账号、反向工程与克隆服务的禁止，并说明「养号」「一机一号一IP」「官方 API 白名单」为何都不成立；法律侧并列反电诈法第 14／38／42 条、刑法第 285 条第 3 款与「客多多精准获客」入库参考案例、第 253 条之一与第 287 条之二，并提示《网络安全法》2025 年修正后该禁止性规定已移至第二十九条、自 2026-01-01 施行；含 6 条误传纠正与 5 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
