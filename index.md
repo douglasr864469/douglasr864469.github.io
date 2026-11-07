@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十八份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十九份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十八份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、五十九份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -131,6 +131,8 @@ permalink: /
   把「这是不是设备农场」拆成账号／设备／网络／编排四层并给出各层证据与局限：设备层讲清 Play Integrity 的 `deviceRecognitionVerdict` 各标签、`recentDeviceActivity` 三级活跃度、`appAccessRiskVerdict` 对已知与未知「捕获屏幕/控制输入」类应用的判决、`playProtectVerdict` 与 `appLicensingVerdict` 的真实含义，说明为何「完整性通过」不等于「真人」；网络层讲清 IP 信誉、ASN、CGNAT 与 IPv6 下的误判；行为层把「同步性」作为最难伪装的特征，给出时间同步、内容复用、接收方重叠与速率基线四类信号；含误报表、分级处置、合规边界（目的限定、自动化决定、留存与跨境）、5 条误传纠正与 5 组未核实项
 - **群发名单与同意管理手册**：[android-bulk-messaging-consent-management.md](/android-bulk-messaging-consent-management/)
   把「他有同意吗」拆成可举证的证据链：三类名单（自有 opt-in／合作方共享／来源不明，第三类无合法基础）分别讨论；同意模型覆盖广播列表、群组与商业接口三条通道，逐项引用 Meta 2024 年 11 月起的 opt-in 规则、《个人信息保护法》第 13／14／17／23／39 条、《通信短信息服务管理规定》2026 修订版与 GDPR 第 4(11)／7 条；证据链给出最小字段表与四档强度，退订给出 7 条落地做法，跨境单列路径；含 5 条误传纠正与 5 组未核实项
+- **接收方防护手册**：[android-bulk-messaging-recipient-protection.md](/android-bulk-messaging-recipient-protection/)
+  从收到消息的一方出发，把「接触→建立信任→诱导操作→变现」四段攻击链拆开，给出每段的可观察痕迹与有效动作；技术核验讲清号码不是身份、官方标识要看平台结构化标记、链接看域名主体、聊天窗口发来的 APK 一律视为恶意（Android 13 起侧载应用默认限制无障碍与通知监听）；取证强调原始导出而非截图，设备侧自查覆盖关联设备／两步验证／补卡与权限组合；举报入口按平台内、12321、96110 与 110、运营商与银行分流，阻断按接收设置／账号加固／家庭与组织三层给出；含 5 条误传纠正与 5 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
