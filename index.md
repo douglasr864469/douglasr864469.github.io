@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、六十一份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、六十二份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、六十一份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、六十二份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -137,6 +137,8 @@ permalink: /
   把企业侧风险拆成账号接管、终端失守、第三方代运营与内部滥用四个入口：账号侧讲清验证码钓鱼、SIM 补卡、扫码登录与客服社工的路径，以及「投诉回流」这一外部信号；终端侧把群控客户端还原为「无障碍＋通知监听＋悬浮窗＋电池白名单」的权限组合，并结合 Android 13 限制设置与 Play Integrity `appAccessRiskVerdict`；落地侧对比设备所有者与资料所有者两种 Android Enterprise 形态，给出代运营五条硬要求、离职回收清单与应急流程；含员工个人信息保护的合规边界、5 条误传纠正与 5 组未核实项
 - **群发、群控与账号买卖的法律边界手册**：[android-bulk-messaging-legal-boundaries.md](/android-bulk-messaging-legal-boundaries/)
   按行政、刑事、民事三层并列责任：行政侧引用《反电信网络诈骗法》第 14／31／38／42 条（卡池、群控盒子、接码平台、出租出借账号）、广告法与 2026 年修订的《通信短信息服务管理规定》；刑事侧梳理第 285 条第 3 款提供侵入非法控制程序工具罪（含「客多多」类群控软件入库案例）、第 253 条之一侵犯公民个人信息罪、第 287 条之一与之二、第 266 条诈骗罪；民事侧讲清《民法典》第 1165 条与第 1194–1197 条、个保法第 69 条过错推定；另给场景定性对照表、企业合规清单与「不知情」抗辩的推定边界；含 5 条误传纠正与 5 组未核实项
+- **TLS 与证书信任链手册**：[android-tls-certificate-trust.md](/android-tls-certificate-trust/)
+  把一次 HTTPS 连接拆成协议协商、链验证、信任锚判定、主机名匹配与额外策略五道关，逐层讲清 Conscrypt（BoringSSL、`com.android.conscrypt` APEX 自 Android 10、内部实现类非公开 API）、系统信任库（`<subject_hash_old>.<n>` 命名、Android 14 迁入 `/apex/com.android.conscrypt/cacerts`、用户库 `cacerts-added`）、按 targetSdk 分档的默认信任策略（23- 信任用户 CA、24+ 仅系统、28+ 默认禁明文、特权应用 Android 9+ 不信任用户库）、NSC 的 `base-config`／`domain-config`／`pin-set`／`debug-overrides`（pin 过期是停止固定而非连接失败、仅支持 SHA-256）、CT 自 Android 16 选择启用与 Android 17 计划默认开启；归纳五类失效模式（验证被短路、`TrustManagerImpl` 缓存缺陷 CVE-2016-0818、Conscrypt 内存安全、配置漂移、生态层信任错位），含 8 条已核实公告台账、14 条误传纠正与 6 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
