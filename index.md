@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、六十二份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、六十三份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、六十二份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、六十三份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -139,6 +139,8 @@ permalink: /
   按行政、刑事、民事三层并列责任：行政侧引用《反电信网络诈骗法》第 14／31／38／42 条（卡池、群控盒子、接码平台、出租出借账号）、广告法与 2026 年修订的《通信短信息服务管理规定》；刑事侧梳理第 285 条第 3 款提供侵入非法控制程序工具罪（含「客多多」类群控软件入库案例）、第 253 条之一侵犯公民个人信息罪、第 287 条之一与之二、第 266 条诈骗罪；民事侧讲清《民法典》第 1165 条与第 1194–1197 条、个保法第 69 条过错推定；另给场景定性对照表、企业合规清单与「不知情」抗辩的推定边界；含 5 条误传纠正与 5 组未核实项
 - **TLS 与证书信任链手册**：[android-tls-certificate-trust.md](/android-tls-certificate-trust/)
   把一次 HTTPS 连接拆成协议协商、链验证、信任锚判定、主机名匹配与额外策略五道关，逐层讲清 Conscrypt（BoringSSL、`com.android.conscrypt` APEX 自 Android 10、内部实现类非公开 API）、系统信任库（`<subject_hash_old>.<n>` 命名、Android 14 迁入 `/apex/com.android.conscrypt/cacerts`、用户库 `cacerts-added`）、按 targetSdk 分档的默认信任策略（23- 信任用户 CA、24+ 仅系统、28+ 默认禁明文、特权应用 Android 9+ 不信任用户库）、NSC 的 `base-config`／`domain-config`／`pin-set`／`debug-overrides`（pin 过期是停止固定而非连接失败、仅支持 SHA-256）、CT 自 Android 16 选择启用与 Android 17 计划默认开启；归纳五类失效模式（验证被短路、`TrustManagerImpl` 缓存缺陷 CVE-2016-0818、Conscrypt 内存安全、配置漂移、生态层信任错位），含 8 条已核实公告台账、14 条误传纠正与 6 组未核实项
+- **WhatsApp 群发投递可观测性手册**：[android-whatsapp-bulk-deliverability-observability.md](/android-whatsapp-bulk-deliverability-observability/)
+  把「发出去了」拆成请求／状态／错误／账号与模板四层信号：接口成功只代表请求被接受（官方明确不代表送达）、每条出站消息最多三条 `sent`／`delivered`／`read` 回执且失败回执省略 `contacts`、重试最长 36 小时故必须去重；逐码梳理 18 个错误（`130429`／`130497`／`131026`／`131047`／`131048`／`131049`／`131050`／`131051`／`131056`／`131057`／`132000`／`132001`／`132005`／`132007`／`132012`／`132015`／`132016`／`133010`）并给出「修好再发／退避／等 24 小时／永久停止／先注册」可重试性矩阵；讲清吞吐（默认 80 mps、共享 Business app 20 mps、自动升至 1,000 mps、含入站）、组合级消息限额（2025-10-07 起 250 起步、滚动 24 小时唯一用户数、质量下降不再降额）、号码对速率与每用户营销限额四把闸门；含模板与号码质量枚举差异、指标分母口径、事故分诊树、webhook 验签与去重、15 条误传纠正与 10 组未核实项
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
