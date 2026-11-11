@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十二份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十三份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十二份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十三份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -179,6 +179,8 @@ permalink: /
   把服务商接入拆成授权、令牌与回调三条隔离线：Embedded Signup v4 的 `config_id` 与 `code`（30 秒有效期）、postMessage 事件枚举、v2/v3 已于 2026-10-15 弃用；区分 System User token 与客户维度 token 的泄露影响面，说明 webhook 默认是应用级、需按 WABA 订阅并按 `phone_number_id` 路由，给出 80→1,000 条/秒与 `TIER_250`…`TIER_UNLIMITED` 配额要点；含七类多租户风险表与客户侧验收七问。
 - **WhatsApp 媒体与文档分享安全手册**：[android-whatsapp-media-document-sharing-security.md](/android-whatsapp-media-document-sharing-security/)
   把素材通道拆成上传、媒体 ID、临时 URL 三段，列出 30 天/7 天/5 分钟三个有效期与 image 5 MB、video/audio 16 MB、document 100 MB、sticker 100/500 KB 的限额；给出 EXIF 与元数据剥离、按文件头嗅探类型、宏与脚本清除、压缩炸弹检测、转码与哈希登记的流水线，讲清 `caption`/`filename` 的注入风险与入站媒体的隔离要求；含 6 条误传纠正与 4 组未核实项。
+- **WhatsApp 会话保留、导出与合规删除手册**：[android-whatsapp-retention-export-deletion.md](/android-whatsapp-retention-export-deletion/)
+  把「数据留多久」拆成个人端、频道与企业端三条线：导出聊天与请求账号信息是两件不同的事（后者约 3 天生成且不含消息），为所有人删除限 2 天、删号 90 天内完成但备份与去标识日志可能更久；临时消息 24 小时/7 天/90 天只作用于新消息、Keep 撤销期限存在 25 天与约 30 天两种口径、View once 可被翻拍或录屏；企业侧讲清 Cloud API 默认 30 天、No Storage 约 1 小时、Coexistence 可同步 6 个月单聊、条款明确不提供归档或备份；附可执行保留政策的五个维度与 6 条误传纠正。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
