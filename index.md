@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十一份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十一份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -175,6 +175,8 @@ permalink: /
   讲清 `catalog_id`、`retailer_id` 与 `product_retailer_id` 的关系，单品/多品/目录三种消息的结构差异（多品最多 30 个商品、单品没有 `action.name`），入站 `order` 对象的字段与「通用场景没有 `order_status` 回执」这一边界（相关字段属于巴西 Payments，状态枚举 pending 至 canceled）；给出价格快照与库存漂移的治理流程、目录投毒与跨租户串目录的防护、webhook 验签与订单幂等要求；含 6 条误传纠正与 4 组未核实项。
 - **Click-to-WhatsApp 归因与 referral 防伪手册**：[android-whatsapp-ctwa-attribution-integrity.md](/android-whatsapp-ctwa-attribution-integrity/)
   指出 `referral` 只出现在广告点击后的首条消息，逐字段说明 `source_url`/`source_id`/`source_type`/`media_type`/`ctwa_clid`（Status 广告位不返回 clid），并把 `ctwa_clid` 到 Conversions API 的路径讲清（dataset、`action_source=business_messaging`、14 个业务消息事件）；强调 7 天窗口只适用于哈希客户信息路径、Meta 不负责去重，拆开伪造 referral、`source_url` 注入、跨租户串单与隐私过度收集四类风险；含 6 条误传纠正与 4 组未核实项。
+- **WhatsApp BSP 与 Embedded Signup 多租户治理手册**：[android-whatsapp-bsp-embedded-signup-tenancy.md](/android-whatsapp-bsp-embedded-signup-tenancy/)
+  把服务商接入拆成授权、令牌与回调三条隔离线：Embedded Signup v4 的 `config_id` 与 `code`（30 秒有效期）、postMessage 事件枚举、v2/v3 已于 2026-10-15 弃用；区分 System User token 与客户维度 token 的泄露影响面，说明 webhook 默认是应用级、需按 WABA 订阅并按 `phone_number_id` 路由，给出 80→1,000 条/秒与 `TIER_250`…`TIER_UNLIMITED` 配额要点；含七类多租户风险表与客户侧验收七问。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
