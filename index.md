@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、七十七份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、七十八份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、七十七份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、七十八份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -169,6 +169,8 @@ permalink: /
   按接入方式而非功能多少给工具排风险谱系（官方 API、官方客户端人工操作、自动化驱动官方客户端、非官方修改版、云控/设备农场），指出每往右一步省下的成本都以账号资产与客户数据为抵押；引用官方立场说明非官方应用可能携带恶意软件、违反条款并导致账号受限；给出采购前的十二个书面问题（主体资质、接入通道、数据流、子处理者、签名更新、退出与责任）与六项技术验证（签名、权限、网络出口、更新机制、SDK、账号隔离）；合同部分覆盖 DPA、审计权、违规通知、变更通知与删除证明，事件响应按隔离、取证、评估、通报、轮换、复盘六步，特别提醒不要急着重装覆盖证据；含 5 条误传纠正与 4 组未核实项
 - **WhatsApp 未成年人保护与年龄门槛手册**：[android-whatsapp-minor-protection-age-assurance.md](/android-whatsapp-minor-protection-age-assurance/)
   梳理 13 岁下限与部分地区的更高门槛、2018 年欧盟升至 16 岁与 2024 年英国/欧盟降回 13 岁的变化、2026 年家长管理账号与青少年监护工具的公开信息（细节标注未核实）；把群组邀请与频道列为未成年人最主要的陌生人接触面，给出家长/学校/企业/平台四方动作，指出年龄声明靠自报、技术限制只能降低概率，末附 5 条误传纠正与 4 组未核实项
+- **WhatsApp Flows 数据交换安全手册**：[android-whatsapp-flows-data-exchange-security.md](/android-whatsapp-flows-data-exchange-security/)
+  把嵌入式表单拆成消息下发、客户端渲染、数据回传三段信任边界：`flow_action` 只有 `navigate` 与 `data_exchange`（没有 `complete`）、健康检查是 POST ping、请求体用 AES-128-GCM 加密并以 RSA-OAEP-SHA256 包裹密钥、响应 IV 逐字节取反且失败返回 421、公钥登记在 `/{PHONE_NUMBER_ID}/whatsapp_business_encryption` 并用 `signature_status` 监控；讲清 `X-Hub-Signature-256` 属于 webhook 而非 Flow 端点、`flow_token` 无官方 TTL 必须自建一次性校验、7.3/4.0 起另有 JWT 校验；含重放、公钥替换、明文落库等七类风险表与 6 条误传纠正。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
