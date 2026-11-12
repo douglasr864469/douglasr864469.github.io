@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十八份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十九份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十八份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十九份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -191,6 +191,8 @@ permalink: /
   拆开群组与社群的角色、邀请链接与准入：先逐群核对「谁能改群信息/谁能拉人/新成员能否看历史」三项默认值，对外渠道一律用需审批链接并按渠道建独立台账（台账不保存完整链接明文），管理员与责任人一一对应、社群公告组仅限指定角色发言；含处罚阶梯、群规与外链政策及六条误区。
 - **WhatsApp 账号接管响应手册**：[android-whatsapp-account-takeover-response.md](/android-whatsapp-account-takeover-response/)
   按入口分类（验证码转发、号码被控、设备关联、物理接触、社工、恶意客户端）给出识别强/弱信号与典型话术，把止损固定为「撤销设备→夺回号码→重置设备凭据→收敛外溢→留档复盘」五步，附 P1/P2/P3 分级、对外通告模板与独立回拨通道要求，纠正「改密码就安全」等六条误区。
+- **WhatsApp Business Platform 迁移治理手册**：[android-whatsapp-app-to-cloud-api-migration.md](/android-whatsapp-app-to-cloud-api-migration/)
+  把从人工客户端到官方 Business Platform 的迁移当作安全决策：先做主体资格、号码归属、同意基础、数据地域四项准入判断，逐条盘点可举证的同意来源并建立撤回传导；模板固定引用已批准版本、分类须与内容一致，切换按冻结—通告—执行—验证—恢复设计且回滚不可即时；含凭据隔离、审计字段与六条误区。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
