@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、九十份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、九十一份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、九十份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、九十一份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -195,6 +195,8 @@ permalink: /
   把从人工客户端到官方 Business Platform 的迁移当作安全决策：先做主体资格、号码归属、同意基础、数据地域四项准入判断，逐条盘点可举证的同意来源并建立撤回传导；模板固定引用已批准版本、分类须与内容一致，切换按冻结—通告—执行—验证—恢复设计且回滚不可即时；含凭据隔离、审计字段与六条误区。
 - **WhatsApp 品牌仿冒识别与处置手册**：[android-whatsapp-business-impersonation-defense.md](/android-whatsapp-business-impersonation-defense/)
   从品牌所有者视角处理仿冒：公布唯一官方号码与非会话的核实通道、说明认证标识只证明归属不保证内容；按仿冒号码、名称近似、盗用素材、冒充员工四类建监控，给出含官方证明、仿冒标识、行为证据与影响范围的举证包与 0–2 小时到 1 周的处置节奏，并强调先排除自家账号被接管再定性。
+- **WhatsApp 客服会话交接与人机协作治理手册**：[android-whatsapp-handover-agent-workbench.md](/android-whatsapp-handover-agent-workbench/)
+  把会话交接拆成控制权、上下文、坐席与审计四条线：用自动/人工/暂停三态保证任一时刻单一发言主体，交接须含声明、指派、摘要、回执四要素；摘要按最小字段且不复刻敏感材料，坐席一人一号、离职即收回，留痕要能回答「谁发的、依据哪版话术、谁批的」；含七类失效模式与六条误区。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
