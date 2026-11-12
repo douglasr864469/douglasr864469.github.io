@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十六份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十七份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十六份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、八十七份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -187,6 +187,8 @@ permalink: /
   把 Business Calling 拆成同意、主叫号码与录音转写三段：语音是独立通道，既有的消息同意不自动覆盖语音；主叫号码应由企业持有并登记用途，录音前需明确告知对象、范围与留存期限；给出异常呼叫信号表与十项技术治理清单，纠正「语音比文字随意」「录音默认合规」等六条误区。
 - **WhatsApp 关联设备与多端信任治理手册**：[android-whatsapp-linked-devices-trust.md](/android-whatsapp-linked-devices-trust/)
   把关联设备当作一组长期有效的钥匙：列表以应用内服务端数据为准、卸载不等于解绑、配对码按登录凭据管理；台账只记设备标识/用途/责任人/复核日期，不含聊天内容；给出被入侵时的「先撤销、再改凭据、再查扩散、再通告」顺序、季度复核节奏与六条误区。
+- **WhatsApp 社群与群组治理手册**：[android-whatsapp-communities-group-governance.md](/android-whatsapp-communities-group-governance/)
+  拆开群组与社群的角色、邀请链接与准入：先逐群核对「谁能改群信息/谁能拉人/新成员能否看历史」三项默认值，对外渠道一律用需审批链接并按渠道建独立台账（台账不保存完整链接明文），管理员与责任人一一对应、社群公告组仅限指定角色发言；含处罚阶梯、群规与外链政策及六条误区。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
