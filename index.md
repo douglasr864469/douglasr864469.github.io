@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十六份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十七份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十六份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十七份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -267,6 +267,8 @@ permalink: /
   说明 64 位设备上 `compat_sys_*`、`compat_ptr`、`compat_ioctl` 这层「翻译层」为何天然容易出错：同一份用户数据被按两套结构体解读，指针宽度与对齐差异在转换时最容易丢失校验；梳理 Android 从 32 位到 64 位的时间线与当前仍保留兼容路径的组件；列 CVE-2014-0038、CVE-2010-4073、CVE-2007-2878 三条公开案例，并记录「未检索到 Android 专属 compat 条目」这一检索结论；给编译选项核对、ioctl 命令白名单与模糊测试建议；含六条误区与四组未核实项。
 - **Android 系统属性服务（property_service）攻击面手册**：[android-system-property-service.md](/android-system-property-service/)
   把属性系统当成「配置总线 + 控制通道 + 共享内存」三合一对象：讲清读走只读映射、写只能经 `/dev/socket/property_service` 这一条路径，`PROP_MSG_SETPROP2` 与早期消息类型的差异；逐条拆 `ro.`／`persist.`／`ctl.`／`sys.`／`debug.` 前缀的语义与审计要点，指出 `ctl.start`／`ctl.stop` 除属性权限外还有针对目标服务的附加校验；说明 `property_contexts` 精确匹配与前缀匹配的优先级如何决定实际授权，以及 `vendor_init` 常成为失配来源；记录「未检索到直接针对该服务的 CVE」这一结论，把风险定位到策略配置；含六条误区与四组未核实项。
+- **Android init 进程与服务启动流程安全手册**：[android-init-service-boot.md](/android-init-service-boot/)
+  讲 PID 1 的两阶段启动为什么要分开、rc 脚本四类节（`service`／`on`／`import`／`override`）各自能接受哪些关键字，以及服务状态机在退出、重启退避、`oneshot` 与 `disabled` 上的真实行为；指出 `on property:xxx` 把属性写入直接变成 init 命令，是属性可写性风险向启动链传导的通道；区分 `init` 与 `vendor_init` 两个域，说明为何厂商定制最易在此处扩大权限；列 CVE-2021-0703（`SecondStageMain` 相关释放后使用，CWE-416）并记录「未检索到第二条主体逻辑 CVE」；给 rc 全量导出比对、root 服务盘点与启动期监测方法；含六条误区与三组未核实项。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
