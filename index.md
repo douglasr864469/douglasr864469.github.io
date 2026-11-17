@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十七份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十八份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十七份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十八份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -269,6 +269,8 @@ permalink: /
   把属性系统当成「配置总线 + 控制通道 + 共享内存」三合一对象：讲清读走只读映射、写只能经 `/dev/socket/property_service` 这一条路径，`PROP_MSG_SETPROP2` 与早期消息类型的差异；逐条拆 `ro.`／`persist.`／`ctl.`／`sys.`／`debug.` 前缀的语义与审计要点，指出 `ctl.start`／`ctl.stop` 除属性权限外还有针对目标服务的附加校验；说明 `property_contexts` 精确匹配与前缀匹配的优先级如何决定实际授权，以及 `vendor_init` 常成为失配来源；记录「未检索到直接针对该服务的 CVE」这一结论，把风险定位到策略配置；含六条误区与四组未核实项。
 - **Android init 进程与服务启动流程安全手册**：[android-init-service-boot.md](/android-init-service-boot/)
   讲 PID 1 的两阶段启动为什么要分开、rc 脚本四类节（`service`／`on`／`import`／`override`）各自能接受哪些关键字，以及服务状态机在退出、重启退避、`oneshot` 与 `disabled` 上的真实行为；指出 `on property:xxx` 把属性写入直接变成 init 命令，是属性可写性风险向启动链传导的通道；区分 `init` 与 `vendor_init` 两个域，说明为何厂商定制最易在此处扩大权限；列 CVE-2021-0703（`SecondStageMain` 相关释放后使用，CWE-416）并记录「未检索到第二条主体逻辑 CVE」；给 rc 全量导出比对、root 服务盘点与启动期监测方法；含六条误区与三组未核实项。
+- **Android logd 与日志、审计链路完整性手册**：[android-logd-audit-integrity.md](/android-logd-audit-integrity/)
+  把日志系统当作数据通道、权限边界与证据源三重对象：讲 `logdw` 只写 socket 与内核凭据归属，说明「日志正文可被任意伪造、来源由进程身份决定」；解释多缓冲区与丢弃是设计行为，因此「没有日志」不能推出「没有事件」；梳理读取侧的权限与策略双层限制、内核日志转发所需的特权，以及 SELinux 拒绝消息经 netlink 汇聚成 `avc: denied` 的链路；强调审计链路中断属静默失效，需监控「写入速率突降」与「审计消息归零」；给日志分级规范、敏感字段扫描、证据使用与交叉验证要求；含六条误区与四组未核实项。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
