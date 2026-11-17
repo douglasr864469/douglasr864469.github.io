@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十二份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十三份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十二份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十三份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -259,6 +259,8 @@ permalink: /
   讲缺页处理被用户态接管后的边界：区分 `UFFD_USER_MODE_ONLY` 与全权限模式，说明 `unprivileged_userfaultfd` 默认 0 的语义变化及其对旧应用的影响；核对 GKI 开启 `CONFIG_USERFAULTFD`、bionic seccomp 仍放行该系统调用、SELinux 按域收紧这三层错位带来的实际暴露；列 CVE-2017-15126、CVE-2018-18397、CVE-2021-47461 三条公开案例；讨论与 ART 并发回收机制的张力并标注未核实；含六条误区与四组未核实项。
 - **Android 熵源与随机数安全边界手册**：[android-kernel-entropy-randomness.md](/android-kernel-entropy-randomness/)
   从 `getrandom` 的引入讲起，说明 `GRND_INSECURE` 与 `GRND_RANDOM` 的真实语义（后者在新内核上已无实际阻塞效果）；拆启动期熵来源、`kaslr-seed` 的传递、`CONFIG_RANDOM_TRUST_BOOTLOADER` 的信任假设，以及硬件随机源（RNDR/RNDRRS）在 ARM 上的可用条件；回顾 CVE-2013-7372 与旧版 `SHA1PRNG` 的种子缺陷；给应用侧 `SecureRandom` 的正确用法、密钥生成与启动期阻塞问题的处置建议；含六条误区与四组未核实项。
+- **Android 内核 keyring 与凭据缓存安全手册**：[android-kernel-keyring-credentials.md](/android-kernel-keyring-credentials/)
+  讲内核钥匙环的模型与权限位，以及它与 Android 文件加密的关系：fscrypt v1 曾借助钥匙环传递主密钥，v2 与后续版本改走其他路径，Linux 6.1 更直接移除了这部分用法（CVE-2022-49899）；拆 `KEYCTL_*` 系列操作在 Android 上的可达性——Android O 起 seccomp 已阻断大部分钥匙控制调用；列 CVE-2016-0728（成因并非简单整数溢出）、CVE-2017-7374、CVE-2017-17807、CVE-2024-50301 四条公开案例；给配置核对与策略审计要点；含六条误区与四组未核实项。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
