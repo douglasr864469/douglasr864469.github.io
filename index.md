@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十一份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十二份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十一份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十二份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -257,6 +257,8 @@ permalink: /
   讲共享环、注册缓冲区、超时与取消、文件描述符注册四类机制如何在并发与生命周期上制造缺陷；按内核配置、SELinux 域授权、seccomp 允许清单三层判断暴露条件，指出「内核支持 io_uring」不等于「应用可调用」；列 CVE-2021-3491、CVE-2021-41073、CVE-2022-29582、CVE-2023-2598 四条公开案例，说明 `kernel.io_uring_disabled` 三档语义与 GKI defconfig 的实际缺口；给配置核对、策略比对与运行期观测要点；含六条误区与四组未核实项。
 - **Android 内核 userfaultfd 与缺页处理攻击面手册**：[android-kernel-userfaultfd.md](/android-kernel-userfaultfd/)
   讲缺页处理被用户态接管后的边界：区分 `UFFD_USER_MODE_ONLY` 与全权限模式，说明 `unprivileged_userfaultfd` 默认 0 的语义变化及其对旧应用的影响；核对 GKI 开启 `CONFIG_USERFAULTFD`、bionic seccomp 仍放行该系统调用、SELinux 按域收紧这三层错位带来的实际暴露；列 CVE-2017-15126、CVE-2018-18397、CVE-2021-47461 三条公开案例；讨论与 ART 并发回收机制的张力并标注未核实；含六条误区与四组未核实项。
+- **Android 熵源与随机数安全边界手册**：[android-kernel-entropy-randomness.md](/android-kernel-entropy-randomness/)
+  从 `getrandom` 的引入讲起，说明 `GRND_INSECURE` 与 `GRND_RANDOM` 的真实语义（后者在新内核上已无实际阻塞效果）；拆启动期熵来源、`kaslr-seed` 的传递、`CONFIG_RANDOM_TRUST_BOOTLOADER` 的信任假设，以及硬件随机源（RNDR/RNDRRS）在 ARM 上的可用条件；回顾 CVE-2013-7372 与旧版 `SHA1PRNG` 的种子缺陷；给应用侧 `SecureRandom` 的正确用法、密钥生成与启动期阻塞问题的处置建议；含六条误区与四组未核实项。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
