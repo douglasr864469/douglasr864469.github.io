@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十八份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十九份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十八份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十九份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -271,6 +271,8 @@ permalink: /
   讲 PID 1 的两阶段启动为什么要分开、rc 脚本四类节（`service`／`on`／`import`／`override`）各自能接受哪些关键字，以及服务状态机在退出、重启退避、`oneshot` 与 `disabled` 上的真实行为；指出 `on property:xxx` 把属性写入直接变成 init 命令，是属性可写性风险向启动链传导的通道；区分 `init` 与 `vendor_init` 两个域，说明为何厂商定制最易在此处扩大权限；列 CVE-2021-0703（`SecondStageMain` 相关释放后使用，CWE-416）并记录「未检索到第二条主体逻辑 CVE」；给 rc 全量导出比对、root 服务盘点与启动期监测方法；含六条误区与三组未核实项。
 - **Android logd 与日志、审计链路完整性手册**：[android-logd-audit-integrity.md](/android-logd-audit-integrity/)
   把日志系统当作数据通道、权限边界与证据源三重对象：讲 `logdw` 只写 socket 与内核凭据归属，说明「日志正文可被任意伪造、来源由进程身份决定」；解释多缓冲区与丢弃是设计行为，因此「没有日志」不能推出「没有事件」；梳理读取侧的权限与策略双层限制、内核日志转发所需的特权，以及 SELinux 拒绝消息经 netlink 汇聚成 `avc: denied` 的链路；强调审计链路中断属静默失效，需监控「写入速率突降」与「审计消息归零」；给日志分级规范、敏感字段扫描、证据使用与交叉验证要求；含六条误区与四组未核实项。
+- **Android PackageManager 与 APK 解析攻击面手册**：[android-package-manager-apk-parsing.md](/android-package-manager-apk-parsing/)
+  把安装当成一条安全边界：分容器层、清单层、资源层、包模型层、签名层五层讲解析栈各自处理哪些外部长度与索引；说明会话式安装在提交前完成校验的价值、split APK 必须满足的包名/版本/签名/split 名与唯一 base 约束，以及 APEX 由独立服务挂载而不经 PackageManager 这一常被混淆的区别；按 v1–v4 梳理签名方案演进，指出 v2 「校验对象＝整个文件」如何从结构上消解 Janus 一类「校验 A、运行 B」的问题；列 CVE-2017-13156（Janus，5.1.1–8.0）、CVE-2013-4787（Master Key）、Fake ID（无 CVE）等公开案例；给证书指纹校验、`sharedUserId` 盘点与安装异常检测要点；含六条误区与四组未核实项。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
