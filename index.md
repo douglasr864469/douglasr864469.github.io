@@ -1,13 +1,13 @@
 ---
 layout: page
 title: "Android 系统漏洞安全研究资料"
-description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十三份专题手册与一篇底层漏洞研究文章。"
+description: "从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十四份专题手册与一篇底层漏洞研究文章。"
 permalink: /
 ---
 
 > 全部文章可免费阅读；Markdown 源文件见 [https://github.com/douglasr864469/android-security-report](https://github.com/douglasr864469/android-security-report)，同一份资料同步发布在 GitLab 与 Bitbucket。
 
-从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十三份专题手册与一篇底层漏洞研究文章。
+从防御视角梳理 Android 系统攻击面、漏洞类型、典型案例、编号与公告体系、底层架构与研究方法的公开研究资料，含一份总览报告、一百二十四份专题手册与一篇底层漏洞研究文章。
 
 ## 内容
 
@@ -261,6 +261,8 @@ permalink: /
   从 `getrandom` 的引入讲起，说明 `GRND_INSECURE` 与 `GRND_RANDOM` 的真实语义（后者在新内核上已无实际阻塞效果）；拆启动期熵来源、`kaslr-seed` 的传递、`CONFIG_RANDOM_TRUST_BOOTLOADER` 的信任假设，以及硬件随机源（RNDR/RNDRRS）在 ARM 上的可用条件；回顾 CVE-2013-7372 与旧版 `SHA1PRNG` 的种子缺陷；给应用侧 `SecureRandom` 的正确用法、密钥生成与启动期阻塞问题的处置建议；含六条误区与四组未核实项。
 - **Android 内核 keyring 与凭据缓存安全手册**：[android-kernel-keyring-credentials.md](/android-kernel-keyring-credentials/)
   讲内核钥匙环的模型与权限位，以及它与 Android 文件加密的关系：fscrypt v1 曾借助钥匙环传递主密钥，v2 与后续版本改走其他路径，Linux 6.1 更直接移除了这部分用法（CVE-2022-49899）；拆 `KEYCTL_*` 系列操作在 Android 上的可达性——Android O 起 seccomp 已阻断大部分钥匙控制调用；列 CVE-2016-0728（成因并非简单整数溢出）、CVE-2017-7374、CVE-2017-17807、CVE-2024-50301 四条公开案例；给配置核对与策略审计要点；含六条误区与四组未核实项。
+- **Android 性能计数器 perf_event 攻击面手册**：[android-kernel-perf-events.md](/android-kernel-perf-events/)
+  讲 `perf_event_open` 的权限模型与 `perf_event_paranoid` 各档语义，说明 AOSP 在 `init.rc` 中如何设定该值、`security.perf_harden` 属性起什么作用，以及现代平台上 `traced_perf` 一类受限采集服务的分工；指出「应用能采样」与「应用能拿到内核地址」是两件事；列 CVE-2013-2094、CVE-2019-3901、CVE-2022-1729、CVE-2023-6931 四条公开案例，并说明 ARMageddon 类侧信道研究的边界；含六条误区与四组未核实项。
 - **适用对象**：安全学习者、企业安全管理者、Android 开发者、设备厂商与 ROM 维护者
 
 ## 说明
